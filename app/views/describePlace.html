@@ -1,0 +1,30 @@
+<div class = "detailPanel" ng-if ="homePage.place">
+<div class ="row">
+    <img class="parallel-div" id="place-icon" ng-src="{{homePage.place.icon}}"></img>
+    <div class="parallel-div" id="place-name">{{homePage.place.name}}</div>
+</div>
+
+<div class="row">
+    <div class="detail">{{homePage.place.formatted_address}}</div>
+</div>
+
+<div class="row">
+    <p>{{homePage.place.rating}}</p>
+</div>
+
+<div class="row">
+       <div class="col-md-4 text-center" id="infoBox">
+           <div class ="row">
+               <div class="glyphicon glyphicon-earphone"></div>
+           </div>
+           <div class ="row">{{homePage.place.formatted_phone_number}}</div>
+       </div>
+       <div class="col-md-4" id="infoBox"></div>
+       <div class="col-md-4" id="infoBox"></div>
+    </ul>
+</div>
+</div>
+
+    
+            
+    

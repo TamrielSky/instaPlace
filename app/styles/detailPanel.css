@@ -1,0 +1,27 @@
+.parallel-div {
+    display: inline-block;
+}
+
+.detail {
+    color: #777;
+    letter-spacing: .5px;
+    padding-top: 2px
+}
+
+#infoBox {
+    background-color: #eaeaea;
+    height: 40px;
+    width: 30%;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+}
+
+
+#infoBox:hover {
+    background-color: #d2d2d2;
+}
+
+#place-icon {
+    height: 50px;
+    width: 50px;
+}

@@ -1,0 +1,12 @@
+
+<div id="map" class="invisibleMap"></div>
+
+<ui-gmap-google-map center="homePage.location.coords" zoom="14">
+         <ui-gmap-marker coords="homePage.currentLocation.coords" options="mapConfig.currentLocationMarker.options"  events="mapConfig.currentLocationMarker.events" idkey="1">
+        </ui-gmap-marker>
+         <ui-gmap-polyline ng-repeat="p in homePage.polylines" path="p.path" stroke="p.stroke" visible='p.visible'
+                  geodesic='p.geodesic' fit="false" editable="p.editable" draggable="p.draggable" icons='p.icons'>
+         </ui-gmap-polyline>
+</ui-gmap-google-map>
+
+

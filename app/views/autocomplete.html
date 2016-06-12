@@ -1,0 +1,11 @@
+
+<div class="container" id="toolbar">
+<ul>    
+    <li><div class="round-button" ng-click="homePage.setLocation()"></div></li>
+    <li><input type="text" placeholder="Enter a location" ng-model="homePage.currentAddress" class="searchBox" ng-autocomplete ng-model="autocomplete" options="options" details="details"/></li>
+    <li><slider ng-model="sliderModel" min="1" step="1" max="50" class="customSlider"></slider></li>
+    <li><button type="button" class="btn btn-danger" ng-click="homePage.searchNearByPlaces()">Search</button></li>
+</ul>
+</div>
+ 
+
