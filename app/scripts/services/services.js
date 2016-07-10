@@ -32,8 +32,8 @@ angular.module('instaPlaceApp')
               var geocoder = new google.maps.Geocoder;
               geocoder.geocode({ 'location': {lat: coords.latitude, lng: coords.longitude} }, function (results, status) {
                   if (status === google.maps.GeocoderStatus.OK) {
-                      if (results[1]) {
-                          resolve(results[1].formatted_address);
+                      if (results[0]) {
+                          resolve(results[0].formatted_address);
                       } else {
                           reject("error");
 
