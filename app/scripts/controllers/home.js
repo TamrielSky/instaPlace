@@ -38,9 +38,10 @@ angular.module('instaPlaceApp')
      this.searchNearByPlaces = function () {
          var self = this;
          $locationService.getLatLngFromAddress(this.currentAddress).then(function (position) {
-             return $locationService.getNearByPlaces(position.lat(), position.lng(),  14)
+             return $locationService.getNearByPlaces(position.lat(), position.lng(),  14, self.map, 40233)
          })
          .then(function (places) {
+             debugger;
               self.places = places;
               $scope.$apply();
               return $locationService.getAllPlaceDetailsById(self.places)

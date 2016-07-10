@@ -8,8 +8,12 @@
  * Controller of the instaPlaceApp
  */
 angular.module('instaPlaceApp')
-  .service('geolocationService', function () {
+  .service('geolocationService', function ($http) {
    
+      this.yelpApi = "https://api.yelp.com/v2/search/?";
+      this.fourSquareApi = "https://api.foursquare.com/v2/venues/search?";
+      this.currentAddress = "";
+
       // Try W3C Geolocation (Preferred)
       this.getLocation = function () {
           return new Promise( function(resolve, reject) {
@@ -28,11 +32,13 @@ angular.module('instaPlaceApp')
       }
       
       this.getAddress = function (coords) {
+          var self = this;
           return new Promise(function (resolve, reject) {
               var geocoder = new google.maps.Geocoder;
               geocoder.geocode({ 'location': {lat: coords.latitude, lng: coords.longitude} }, function (results, status) {
                   if (status === google.maps.GeocoderStatus.OK) {
                       if (results[0]) {
+                        self.currentAddress = results[0].formatted_address;
                           resolve(results[0].formatted_address);
                       } else {
                           reject("error");
@@ -45,16 +51,39 @@ angular.module('instaPlaceApp')
           });
       }
 
-      this.getNearByPlaces = function (lat, lng, zoom) {
-          return new Promise(function (resolve, reject) {
+      this.getNearByPlaces = function (lat, lng, zoom, currentMap, radius) {
+          
+          var signature = 
+		      	oauthSignature.generate(
+			      	method, 
+			      	url, 
+			      	params, 
+			      	consumerSecret, 
+			      	tokenSecret, 
+			      	{ encodeSignature: false }
+		      	); 
+          var params = {
+						callback: 								'angular.callbacks._0',
+						location: 								'30030',
+						oauth_consumer_key: 			'h_CfYvwNTS51n96wd1J8Yg', // consumer key
+						oauth_token: 							'YQHmflBE5VKvzjCgO5N3YkmsB4xIUNsa', //Token
+						oauth_signature_method: 	'HMAC-SHA1',
+	          oauth_timestamp: 					new Date().getTime()
+					};
 
-              var map = new google.maps.Map(document.getElementById('map'), {
-                  center: { lat: lat, lng: lng },
-                  zoom: 15
-              });
+
+          var promises = [];
+           
+          promises.push($http({method: 'GET', url: this.yelpApi+'location='+this.currentAddress+'&sort=1&limit=20&radius_filter='+radius, params: params}));
+          promises.push($http({method: 'GET', url: this.yelpApi+'location='+this.currentAddress+'&sort=1&offset=20&limit=20&radius_filter='+radius, params: params}));
+          promises.push($http({method: 'GET', url: this.fourSquareApi+'intent=explore&ll='+lat+','+lng+'&v=20160806&client_id=HTYPWDKP445LBUZJLZWDR3C4D1GCOB4WNPW20UUGSJH0C32R&client_secret=V5VSZEHG1O4VNIGZSFAM11ZLHB2WKOEWOPMADS0XF1QRQMML'})); 
+          
+          promises.push(new Promise(function (resolve, reject) {
+
+              var map = currentMap;
               var request = {
                   location: { lat: lat, lng: lng },
-                  radius: '500',
+                  radius: radius,
                   types: ['store']
               };
               var service = new google.maps.places.PlacesService(map);
@@ -63,7 +92,9 @@ angular.module('instaPlaceApp')
                       resolve(results);
                   }
               });
-          });
+          }));
+
+          return Promise.all(promises);
 
       }
       
