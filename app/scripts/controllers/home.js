@@ -10,6 +10,7 @@
 angular.module('instaPlaceApp')
   .controller('homeCtrl', ['geolocationService', '$localStorage', '$scope', 'uiGmapIsReady', function ($locationService, $localStorage, $scope, uiGmapIsReady) {
             var self = this;
+            self.places = [];
                                var directionsDisplay = new google.maps.DirectionsRenderer();
 
           uiGmapIsReady.promise()
@@ -36,23 +37,38 @@ angular.module('instaPlaceApp')
      }
      
      this.searchNearByPlaces = function () {
-         var self = this;
+
+
+         
          $locationService.getLatLngFromAddress(this.currentAddress).then(function (position) {
-             return $locationService.getNearByPlaces(position.lat(), position.lng(),  14, self.map, 40233)
-         })
-         .then(function (places) {
-             debugger;
-              self.places = places;
+             self.position = position;
+
+         var promise = $locationService.getNearByPlaces(self.position.lat(), self.position.lng(),  14, self.map, 25*1609)
+
+         var distances = [];
+             for(var i = 20; i> 0; i=i-5)
+         {
+             distances.push(i);
+         }
+             distances.forEach(function(distance){
+                 promise = promise.then(function(places){
+                            self.places = self.places.concat(places);                
+                 return $locationService.getNearByPlaces(self.position.lat(), self.position.lng(),  14, self.map, distance*1609)
+             });
+
+             });
+
+           promise.then(function (places) {
+               debugger;
+           self.places = self.places.concat(places);                
               $scope.$apply();
-              return $locationService.getAllPlaceDetailsById(self.places)
-         })
-         .then(function (placesArr) {
-            
-            self.placeDetails = [];
-            self.placeDetails = placesArr;
-             
-           directionsDisplay.setMap(self.map);                
+                         directionsDisplay.setMap(self.map);                
+
+
          });
+         });
+       
+        
      }
      
      this.hoverListItem = function (item) {
