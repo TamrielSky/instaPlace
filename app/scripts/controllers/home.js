@@ -8,7 +8,7 @@
  * Controller of the instaPlaceApp
  */
 angular.module('instaPlaceApp')
-  .controller('homeCtrl', ['geolocationService', '$localStorage', '$scope', 'uiGmapIsReady', function ($locationService, $localStorage, $scope, uiGmapIsReady) {
+  .controller('homeCtrl', ['geolocationService', 'placeFilterService', '$localStorage', '$scope', 'uiGmapIsReady', function ($locationService, $placeFilterService, $localStorage, $scope, uiGmapIsReady) {
             var self = this;
             self.places = [];
                                var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -59,10 +59,13 @@ angular.module('instaPlaceApp')
              });
 
            promise.then(function (places) {
-               debugger;
-           self.places = self.places.concat(places);                
-              $scope.$apply();
-                         directionsDisplay.setMap(self.map);                
+
+
+               self.places = self.places.concat(places);    
+               var filteredPlaces = $placeFilterService.filterPlaces(self.places);
+               
+               $scope.$apply();
+               directionsDisplay.setMap(self.map);                
 
 
          });
