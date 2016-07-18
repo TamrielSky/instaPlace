@@ -6,9 +6,9 @@
 
     <div class="panel-body">
 
-        <div class="ui-list-view-bordered" ui-list-view="place in homePage.places | filter:search" ng-mouseover="homePage.hoverListItem($event)">
+        <div class="ui-list-view-bordered" ui-list-view="place in homePage.filteredPlaces | filter:search" ng-mouseover="homePage.hoverListItem($event)">
             <p class="name" id="{{place.place_id}}"><strong>{{place.name}}</strong></p>
-            <div class="email" id="{{place.place_id}}">{{place.vicinity}}</div>
+            <div class="email" id="{{place.place_id}}">{{place.address}}</div>
         </div>
 
     </div>

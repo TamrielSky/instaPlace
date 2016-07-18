@@ -11,7 +11,7 @@ angular.module('instaPlaceApp')
     .service('placeFilterService', function ($http) {
 
 
-        this.filterPlaces = function (places) {
+        this.filterPlaces = function (places, currentLocation) {
 
             var placeList = [];
             var count = 0;
@@ -80,6 +80,7 @@ angular.module('instaPlaceApp')
                         placeList[count]["rating"] = place.rating;
                         placeList[count]["name"] = place.name;
                         placeList[count]["location"] = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
+                        placeList["distance"] = this.calcDistance(currentLocation.coords.latitude, currentLocation.coords.longitude, place.geometry.location.lat(), place.geometry.location.lng());
                         placeList[count]["address"] = place.vicinity;
                         count++;
 
@@ -91,5 +92,34 @@ angular.module('instaPlaceApp')
 
             return placeList;
 
+        }
+
+        this.calcDistance = function (lat1, lng1, lat2, lng2) {
+
+            var R = 6371; // km
+            var dLat = toRad(lat2 - lat1);
+            var dLon = toRad(lng2 - lat1);
+            var lat1 = toRad(lat1);
+            var lat2 = toRad(lat2);
+
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            var d = R * c;
+            return d*1000;
+
+            // Converts numeric degrees to radians
+            function toRad(Value) {
+                return Value * Math.PI / 180;
+            }
+
+        }
+
+        this.compare = function (a, b) {
+            if (a.distance < b.distance)
+                return -1;
+            if (a.distance > b.distance)
+                return 1;
+            return 0;
         }
     });

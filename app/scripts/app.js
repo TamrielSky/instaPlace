@@ -44,7 +44,9 @@ angular
 
             // the child views will be defined here (absolutely named)
             'autocompleteView@home': { 
-              templateUrl: 'views/autocomplete.html'
+              templateUrl: 'views/autocomplete.html',
+              controller: 'autocompleteCtrl',
+              controllerAs: 'autocomplete'
             },
             
             'listView@home': { 
