@@ -37,6 +37,7 @@ angular.module('instaPlaceApp')
                             }
                             placeList[count]["address"] = address;
                             placeList[count]["location"] = places[resultCount].data.businesses[j].location.coordinate;
+                            placeList[count]["datasrc"] = "yelp";
                             count++;
 
                         }
@@ -65,6 +66,7 @@ angular.module('instaPlaceApp')
                             placeList[count]["location"] = { lat: venue.location.lat, lng: venue.location.lng };
                             placeList[count]["contact"] = venue.contact.formattedPhone;
                             placeList[count]["review"] = placeItems[j].tips[0].text;
+                            placeList[count]["datasrc"] = "foursquare";
                             count++;
                         }
                     }
@@ -82,6 +84,7 @@ angular.module('instaPlaceApp')
                         placeList[count]["location"] = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
                         placeList["distance"] = this.calcDistance(currentLocation.coords.latitude, currentLocation.coords.longitude, place.geometry.location.lat(), place.geometry.location.lng());
                         placeList[count]["address"] = place.vicinity;
+                        placeList[count]["datasrc"] = "google";
                         count++;
 
                     }
@@ -91,6 +94,28 @@ angular.module('instaPlaceApp')
             }
 
             return placeList;
+
+        }
+
+        this.eliminateDuplicates = function (places) {
+
+            var newPlaces = [];
+            var placeList = [];
+            var count = 0;
+
+            for(var i=0; i< places.length; i++) {
+                newPlaces[places[i].name] = places[i];
+            }
+
+
+            for(var item in newPlaces) {
+
+                placeList[count++] = newPlaces[item];
+
+            }
+
+            return placeList;
+
 
         }
 

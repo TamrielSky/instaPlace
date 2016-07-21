@@ -12,6 +12,7 @@ angular.module('instaPlaceApp')
         var self = this;
         self.places = [];
         self.filteredPlaces = [];
+        self.markers = [];
         var directionsDisplay = new google.maps.DirectionsRenderer();
 
         uiGmapIsReady.promise()
@@ -62,8 +63,8 @@ angular.module('instaPlaceApp')
 
 
                     self.places = self.places.concat(places);
-                    self.filteredPlaces = ($placeFilterService.filterPlaces(self.places, self.location)).sort($placeFilterService.compare);
-
+                    self.filteredPlaces = $placeFilterService.eliminateDuplicates(($placeFilterService.filterPlaces(self.places, self.location)).sort($placeFilterService.compare));
+                    console.log(self.filteredPlaces);
                     angular.copy(self.filteredPlaces, self.places);
                     $scope.$apply();
                     directionsDisplay.setMap(self.map);
@@ -78,6 +79,7 @@ angular.module('instaPlaceApp')
         this.filterPlaces = function (event, value) {
 
             var tempFilter = [];
+            self.markers = [];
             var places = self.places;
             var placeCount = 0;
             for (var count = 0; count < places.length; count++) {
@@ -91,6 +93,13 @@ angular.module('instaPlaceApp')
             }
 
             self.filteredPlaces = tempFilter.sort($placeFilterService.compare);
+            
+            for(var count = 0; count< self.filteredPlaces.length; count++) {
+
+                self.markers.push({coords: {latitude: self.filteredPlaces[count].location.lat, longitude: self.filteredPlaces[count].location.lng}, key: count});
+            }
+            
+            console.log(self.filteredPlaces);
 
         }
 
