@@ -8,10 +8,9 @@
  * Controller of the instaPlaceApp
  */
 angular.module('instaPlaceApp')
-  .controller('listCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
-  });
+  .controller('listCtrl', ['$scope', function ($scope) {
+
+    $scope.Math = window.Math;
+    
+
+  }]);

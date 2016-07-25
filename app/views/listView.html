@@ -7,8 +7,12 @@
     <div class="panel-body">
 
         <div class="ui-list-view-bordered" ui-list-view="place in homePage.filteredPlaces | filter:search" ng-mouseover="homePage.hoverListItem($event)">
-            <p class="name" id="{{place.place_id}}"><strong>{{place.name}}</strong></p>
-            <div class="email" id="{{place.place_id}}">{{place.address}}</div>
+            <p class="place" id="{{place.place_id}}">{{place.name}}<span class="distance">{{(place.distance*0.000621371192).toFixed(2)}}mi</span></p>
+            <div class="stars">
+                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+            </div>
+
+            <div class="address" id="{{place.place_id}}">{{place.address}}</div>
         </div>
 
     </div>

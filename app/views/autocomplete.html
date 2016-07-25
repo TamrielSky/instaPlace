@@ -3,8 +3,16 @@
 <ul>    
     <li><div class="round-button" ng-click="homePage.setLocation()"></div></li>
     <li><input type="text" placeholder="Enter a location" ng-model="homePage.currentAddress" class="searchBox" ng-autocomplete ng-model="autocomplete" options="options" details="details"/></li>
-    <li><slider ng-model="homePage.sliderModel" min="1" step="1" max="25" class="customSlider" on-stop-slide="homePage.filterPlaces($event, value)"></slider></li>
+    <li><slider ng-model="homePage.sliderModel" min="0.5" step="0.5" max="25" class="customSlider" on-stop-slide="homePage.filterPlaces($event, value)"></slider></li>
     <li><button type="button" class="btn btn-danger" ng-click="homePage.searchNearByPlaces()">Search</button></li>
+    <div class="filters">
+    <li><div class="restaurant" ng-click="homePage.addFilter('restaurant')"></div></li>
+    <li><div class="grocery" ng-click="homePage.addFilter('grocery')"></div></li>
+    <li><div class="bar" ng-click="homePage.addFilter('bar')"></div></li>
+    <li><div class="airport" ng-click="homePage.addFilter('airport')"></div></li>
+    <li><div class="hospital" ng-click="homePage.addFilter('hospital')"></div></li>
+    <li><div class="atm" ng-click="homePage.addFilter('atm')"></div></li>
+    </div>
 </ul>
 </div>
  

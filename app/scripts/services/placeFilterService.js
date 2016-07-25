@@ -11,7 +11,7 @@ angular.module('instaPlaceApp')
     .service('placeFilterService', function ($http) {
 
 
-        this.filterPlaces = function (places, currentLocation) {
+        this.filterPlaces = function (places, currentLocation, searchFilter) {
 
             var placeList = [];
             var count = 0;
@@ -29,15 +29,17 @@ angular.module('instaPlaceApp')
                             placeList[count]["rating"] = places[resultCount].data.businesses[j].rating;
                             placeList[count]["review"] = places[resultCount].data.businesses[j].snippet_text;
 
-                            var address = "";
+                            var address = [];
                             for (var i = 0; i < places[resultCount].data.businesses[j].location.display_address.length; i++) {
 
-                                address = address + places[resultCount].data.businesses[j].location.display_address[i];
+                                address.push(places[resultCount].data.businesses[j].location.display_address[i]);
 
                             }
+                            address = address.join();
                             placeList[count]["address"] = address;
                             placeList[count]["location"] = places[resultCount].data.businesses[j].location.coordinate;
                             placeList[count]["datasrc"] = "yelp";
+                            placeList[count]["filter"] = searchFilter;
                             count++;
 
                         }
@@ -53,20 +55,24 @@ angular.module('instaPlaceApp')
 
                             placeList[count]["distance"] = venue.location.distance;
 
-                            var address = "";
+                            var address = [];
                             for (var i = 0; i < venue.location.formattedAddress.length; i++) {
 
-                                address = address + venue.location.formattedAddress[i];
+                                address.push(venue.location.formattedAddress[i]);
 
                             }
+                            address = address.join();
                             placeList[count]["address"] = address;
 
                             placeList[count]["rating"] = venue.rating;
                             placeList[count]["name"] = venue.name;
-                            placeList[count]["location"] = { lat: venue.location.lat, lng: venue.location.lng };
+                            placeList[count]["location"] = { latitude: venue.location.lat, longitude: venue.location.lng };
                             placeList[count]["contact"] = venue.contact.formattedPhone;
+                            if(placeItems[j].tips) {
                             placeList[count]["review"] = placeItems[j].tips[0].text;
+                            }
                             placeList[count]["datasrc"] = "foursquare";
+                            placeList[count]["filter"] = searchFilter;
                             count++;
                         }
                     }
@@ -81,10 +87,11 @@ angular.module('instaPlaceApp')
 
                         placeList[count]["rating"] = place.rating;
                         placeList[count]["name"] = place.name;
-                        placeList[count]["location"] = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
+                        placeList[count]["location"] = { latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng() };
                         placeList["distance"] = this.calcDistance(currentLocation.coords.latitude, currentLocation.coords.longitude, place.geometry.location.lat(), place.geometry.location.lng());
                         placeList[count]["address"] = place.vicinity;
                         placeList[count]["datasrc"] = "google";
+                        placeList[count]["filter"] = searchFilter;
                         count++;
 
                     }
@@ -92,9 +99,7 @@ angular.module('instaPlaceApp')
                 }
 
             }
-
             return placeList;
-
         }
 
         this.eliminateDuplicates = function (places) {
@@ -103,20 +108,18 @@ angular.module('instaPlaceApp')
             var placeList = [];
             var count = 0;
 
-            for(var i=0; i< places.length; i++) {
-                newPlaces[places[i].name] = places[i];
+            for (var i = 0; i < places.length; i++) {
+
+                newPlaces[places[i].address.split(",")[0] + places[i].name] = places[i];
+
             }
-
-
-            for(var item in newPlaces) {
+            for (var item in newPlaces) {
 
                 placeList[count++] = newPlaces[item];
 
             }
 
             return placeList;
-
-
         }
 
         this.calcDistance = function (lat1, lng1, lat2, lng2) {
@@ -141,10 +144,7 @@ angular.module('instaPlaceApp')
         }
 
         this.compare = function (a, b) {
-            if (a.distance < b.distance)
-                return -1;
-            if (a.distance > b.distance)
-                return 1;
-            return 0;
+            return (a.distance - b.distance)
+             
         }
     });

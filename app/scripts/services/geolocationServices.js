@@ -12,6 +12,26 @@ angular.module('instaPlaceApp')
 
         this.yelpApi = "http://api.yelp.com/v2/search/?";
         this.fourSquareApi = "https://api.foursquare.com/v2/venues/explore?";
+
+        this.categoryMap = {
+            'foursquare':{
+            'restaurant': '4bf58dd8d48988d1c4941735',
+            'grocery': '4bf58dd8d48988d118951735',
+            'bar': '4bf58dd8d48988d116941735',
+            'airport': '4bf58dd8d48988d1ed931735',
+            'hospital': '4bf58dd8d48988d196941735',
+            'atm': '4bf58dd8d48988d10a951735'
+            },
+            'yelp':{
+            'restaurant': 'restaurants',
+            'grocery': 'grocery',
+            'bar': 'bars',
+            'airport': 'airports',
+            'hospital': 'hospitals',
+            'atm': 'atm'
+            }
+
+        };
         this.currentAddress = "";
 
         // Try W3C Geolocation (Preferred)
@@ -51,7 +71,7 @@ angular.module('instaPlaceApp')
             });
         }
 
-        this.getNearByPlaces = function (lat, lng, zoom, currentMap, radius) {
+        this.getNearByPlaces = function (lat, lng, zoom, currentMap, radius, filter) {
 
             function randomString(length, chars) {
                 var result = '';
@@ -59,10 +79,10 @@ angular.module('instaPlaceApp')
                 return result;
             }
 
-            function generateParams(lat, lng, address, api, radius, offset) {
-
-                var callbackId = angular.callbacks.counter.toString(36);
-
+            function generateParams(lat, lng, address, api, radius, filter, yelp, offset) {
+                
+                var callbackId = angular.callbacks.$$counter.toString(36);
+       
                 var params = {
                     callback: 'angular.callbacks._' + callbackId,
                     location: address,
@@ -71,7 +91,7 @@ angular.module('instaPlaceApp')
                     oauth_signature_method: 'HMAC-SHA1',
                     oauth_timestamp: new Date().getTime(),
                     oauth_nonce: randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),
-                    term: 'Restaurants',
+                    term: yelp[filter[0]],
                     cll: lat + "," + lng,
                     radius_filter: radius
 
@@ -90,15 +110,18 @@ angular.module('instaPlaceApp')
                 if (offset) {
                     params['offset'] = offset;
                 }
+                if (filter) {
+                    
+                }
                 return params;
             }
             var self = this;
 
             var promises = [];
-            promises.push($http.jsonp(this.yelpApi, { params: generateParams(lat, lng, this.currentAddress, this.yelpApi, radius) }));
+            promises.push($http.jsonp(this.yelpApi, { params: generateParams(lat, lng, this.currentAddress, this.yelpApi, radius, filter, this.categoryMap.yelp) }));
 
             // promises.push($http.jsonp(this.yelpApi+'location='+this.currentAddress+'&sort=1&offset=20&limit=20&radius_filter='+radius, {params: params}));
-            promises.push($http({ method: 'GET', url: this.fourSquareApi + 'radius=' + radius + '&query=restaurant&limit=50&ll=' + lat + ',' + lng + '&v=20160806&client_id=HTYPWDKP445LBUZJLZWDR3C4D1GCOB4WNPW20UUGSJH0C32R&client_secret=V5VSZEHG1O4VNIGZSFAM11ZLHB2WKOEWOPMADS0XF1QRQMML' }));
+            promises.push($http({ method: 'GET', url: this.fourSquareApi + 'radius=' + radius + '&categoryId=' + this.categoryMap.foursquare[filter[0]] + '&limit=50&ll=' + lat + ',' + lng + '&v=20160806&client_id=HTYPWDKP445LBUZJLZWDR3C4D1GCOB4WNPW20UUGSJH0C32R&client_secret=V5VSZEHG1O4VNIGZSFAM11ZLHB2WKOEWOPMADS0XF1QRQMML' }));
 
             promises.push(new Promise(function (resolve, reject) {
 
@@ -106,7 +129,7 @@ angular.module('instaPlaceApp')
                 var request = {
                     location: { lat: lat, lng: lng },
                     radius: radius,
-                    types: ['restaurant']
+                    types: filter
                 };
                 var service = new google.maps.places.PlacesService(map);
                 service.nearbySearch(request, function (results, status) {
