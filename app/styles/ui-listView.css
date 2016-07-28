@@ -42,6 +42,11 @@
     border-bottom: solid 1pt #eee;
 }
 
+.ui-list-view-bordered > .ui-list-view-cell:hover {
+background-color: #F6FcFf;
+
+}
+
 .ui-list-view-bordered > .ui-list-view-cell > .ui-list-view-cell-content > * {
     padding: 10px 10px;
 }
@@ -50,14 +55,32 @@
     border: solid 1pt #eee;
 }
 
-.ui-list-vie    w-striped > .ui-list-view-cell:nth-child(even) {
+.ui-list-view-striped > .ui-list-view-cell:nth-child(even) {
     background: #F9FaFb;
 }
-
-
 
 .ui-list-view-cell-content > ._selected {
     background: #2A70DE;
     color: white;
     border-bottom: solid 1pt #eee;
 }
+
+.stars > img {
+    width: 90px;
+}
+
+.dropdown {
+    display: inline-block;
+    width: 20%;
+}
+
+.dropdown > .btn {
+    width: 100%;
+}
+
+.form-control {
+    display: inline-block;
+    width:75%;
+}
+
+

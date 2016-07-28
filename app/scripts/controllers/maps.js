@@ -3,7 +3,33 @@ angular.module('instaPlaceApp')
 
         // this.mapConfig = { center: { latitude: $localStorage.location.coords.latitude, longitude: $localStorage.location.coords.longitude }, zoom: 8 };
 
+var styles = [
+  {
+    featureType: "all",
+    stylers: [
+      { saturation: -80 }
+    ]
+  },{
+    featureType: "road.arterial",
+    elementType: "geometry",
+    stylers: [
+      { hue: "#00ffee" },
+      { saturation: 50 }
+    ]
+  },{
+    featureType: "poi.business",
+    elementType: "labels",
+    stylers: [
+      { visibility: "off" }
+    ]
+  }
+];
 
+
+
+$scope.options = {
+   styles: styles
+};
 
 
         this.currentLocationMarker = {

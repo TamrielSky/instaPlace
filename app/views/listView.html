@@ -1,6 +1,14 @@
 <div class="contact-list panel panel-default">
 
     <div class="panel-heading">
+        <div class="dropdown">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Sort <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a href="#">Popularity</a></li>
+    <li><a href="#">Distance</a></li>
+  </ul>
+</div>
         <input class="form-control" ng-model="search.name" placeholder="Search place.." />
     </div>
 
@@ -8,8 +16,10 @@
 
         <div class="ui-list-view-bordered" ui-list-view="place in homePage.filteredPlaces | filter:search" ng-mouseover="homePage.hoverListItem($event)">
             <p class="place" id="{{place.place_id}}">{{place.name}}<span class="distance">{{(place.distance*0.000621371192).toFixed(2)}}mi</span></p>
-            <div class="stars">
-                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+            <div ng-if="place.rating" class="stars">
+               
+              <img src="../images/{{Math.floor(place.rating)}}{{Math.round(place.rating)}}stars.png">
+                
             </div>
 
             <div class="address" id="{{place.place_id}}">{{place.address}}</div>

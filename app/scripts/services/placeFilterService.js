@@ -23,6 +23,9 @@ angular.module('instaPlaceApp')
                         for (var j = 0; j < places[resultCount].data.businesses.length; j++) {
                             placeList[count] = {};
 
+                            if(!places[resultCount].data.businesses[j].distance) {
+                                debugger;
+                            }
                             placeList[count]["distance"] = places[resultCount].data.businesses[j].distance;
                             placeList[count]["name"] = places[resultCount].data.businesses[j].name;
                             placeList[count]["contact"] = places[resultCount].data.businesses[j].display_phone;
@@ -53,6 +56,11 @@ angular.module('instaPlaceApp')
                             placeList[count] = {};
                             var venue = placeItems[j].venue;
 
+                            if(!venue.location.distance)
+                            {
+                                debugger;
+                            }
+
                             placeList[count]["distance"] = venue.location.distance;
 
                             var address = [];
@@ -64,7 +72,7 @@ angular.module('instaPlaceApp')
                             address = address.join();
                             placeList[count]["address"] = address;
 
-                            placeList[count]["rating"] = venue.rating;
+                            placeList[count]["rating"] = venue.rating*5/10;
                             placeList[count]["name"] = venue.name;
                             placeList[count]["location"] = { latitude: venue.location.lat, longitude: venue.location.lng };
                             placeList[count]["contact"] = venue.contact.formattedPhone;
@@ -144,7 +152,12 @@ angular.module('instaPlaceApp')
         }
 
         this.compare = function (a, b) {
-            return (a.distance - b.distance)
-             
+
+            if (a.distance == b.distance) {
+                return 0;
+            } else {
+                return a.distance < b.distance ? -1 : 1;
+            }
+
         }
     });

@@ -81,7 +81,10 @@ angular.module('instaPlaceApp')
 
                 promise.then(function (places) {
 
+                    var temp = [];
+
                     self.places = self.places.concat(places);
+                    
                     self.normalizedPlaces = (self.normalizedPlaces.concat($placeFilterService.eliminateDuplicates($placeFilterService.filterPlaces(self.places, self.location, self.searchFilter[0])))).sort($placeFilterService.compare);
                     $scope.$apply();
                     self.filterPlaces(null, self.sliderModel);
@@ -107,19 +110,16 @@ angular.module('instaPlaceApp')
                 }
 
             }
-
             self.filteredPlaces = tempFilter;
             for (var count = 0; count < self.filteredPlaces.length; count++) {
 
                 self.markers.push({ coords: { latitude: self.filteredPlaces[count].location.latitude, longitude: self.filteredPlaces[count].location.longitude }, key: self.markers.length + 1, filter: self.filteredPlaces[count].filter });
+            
             }
-
             console.log(self.filteredPlaces);
-
         }
 
         this.hoverListItem = function (item) {
-
 
             var imgUrl = "";
             var formattedAddress;
