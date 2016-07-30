@@ -35,7 +35,6 @@ $scope.options = {
         this.currentLocationMarker = {
             options: {
                 icon: { url: '../images/blue_dot_circle.png' },
-                draggable: false
             }
         };
 
@@ -86,52 +85,5 @@ $scope.options = {
                 }
             },
         }
-
-        this.restaurant =
-
-            this.restaurant = {
-                options: {
-                    icon: {
-                        url: '../images/restaurant-marker.png', scaledSize: new google.maps.Size(30, 30)
-                    },
-                    draggable: false
-                }
-            };
-
-
-        this.restaurant = {
-            options: {
-                icon: {
-                    url: '../images/restaurant-marker.png', scaledSize: new google.maps.Size(30, 30)
-                },
-                draggable: false
-            }
-        };
-
-        this.restaurant = {
-            options: {
-                icon: {
-                    url: '../images/restaurant-marker.png', scaledSize: new google.maps.Size(30, 30)
-                },
-                draggable: false
-            }
-        };
-        this.restaurant = {
-            options: {
-                icon: {
-                    url: '../images/restaurant-marker.png', scaledSize: new google.maps.Size(30, 30)
-                },
-                draggable: false
-            }
-        };
-
-        this.placeLocationMarker = {
-            options: {
-
-            }
-        }
-
-        this.currentLocationMarker.events = [{ position_changed: function () { console.log("bounds changed"); } }, { cursor_changed: function () { console.log("center changed"); } }];
-
 
     }]);

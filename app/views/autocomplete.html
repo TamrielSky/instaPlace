@@ -5,15 +5,11 @@
     <li><input type="text" placeholder="Enter a location" ng-model="homePage.currentAddress" class="searchBox" ng-autocomplete ng-model="autocomplete" options="options" details="details"/></li>
     <li><slider ng-model="homePage.sliderModel" min="0.5" step="0.5" max="25" class="customSlider" on-stop-slide="homePage.filterPlaces($event, value)"></slider></li>
     <li><button type="button" class="btn btn-danger" ng-click="homePage.searchNearByPlaces()">Search</button></li>
-    <div class="filters">
-    <li><div class="restaurant" style="background-image: url('../images/{{autocomplete.placeIcons.restaurant}}.png'); box-shadow: {{autocomplete.boxShadow}};" ng-click="autocomplete.addFilter('restaurant')"></div></li>
-    <li><div class="grocery" style="background-image: url('../images/{{autocomplete.placeIcons.grocery}}.png'); box-shadow: {{autocomplete.boxShadow}};" ng-click="autocomplete.addFilter('grocery')"></div></li>
-    <li><div class="bar" style="background-image: url('../images/{{autocomplete.placeIcons.bar}}.png'); box-shadow: {{autocomplete.boxShadow}}" ng-click="autocomplete.addFilter('bar')"></div></li>
-    <li><div class="airport"  style="background-image: url('../images/{{autocomplete.placeIcons.airport}}.png'); box-shadow: {{autocomplete.boxShadow}}" ng-click="autocomplete.addFilter('airport')"></div></li>
-    <li><div class="hospital" style="background-image: url('../images/{{autocomplete.placeIcons.hospital}}.png'); box-shadow: {{autocomplete.boxShadow}};" ng-click="autocomplete.addFilter('hospital')"></div></li>
-    <li><div class="atm" style="background-image: url('../images/{{autocomplete.placeIcons.atm}}.png'); box-shadow: {{autocomplete.boxShadow}}" ng-click="autocomplete.addFilter('atm')"></div></li>
-    </div>
-</ul>
+ <div class="filters" ng-repeat="placeIcon in autocomplete.placeIcons">
+            <div class="{{placeIcon.name}}" style="display: inline-block; background-image: url('../images/{{placeIcon.name}}.png'); box-shadow: {{placeIcon.boxShadow}};"
+                ng-click="autocomplete.addFilter(placeIcon.name, homePage)"></div>
+ </div>
+ </ul>
 </div>
  
 

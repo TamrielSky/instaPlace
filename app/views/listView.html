@@ -14,17 +14,17 @@
 
     <div class="panel-body">
 
-        <div class="ui-list-view-bordered" ui-list-view="place in homePage.filteredPlaces | filter:search" ng-mouseover="homePage.hoverListItem($event)">
-            <p class="place" id="{{place.place_id}}">{{place.name}}<span class="distance">{{(place.distance*0.000621371192).toFixed(2)}}mi</span></p>
+        <div class="ui-list-view-bordered" ui-list-view="place in homePage.filteredPlaces | filter:search" > 
+            <div ng-click="homePage.clickListItem(place)">
+            <div class="place" id="{{place.place_id}}">{{place.name}}<span class="distance">{{(place.distance*0.000621371192).toFixed(2)}}mi</span></div>
             <div ng-if="place.rating" class="stars">
                
-              <img src="../images/{{Math.floor(place.rating)}}{{Math.round(place.rating)}}stars.png">
+              <img src="../images/{{Math.floor(place.rating)}}{{Math.round(place.rating)}}stars.png"></img>
                 
             </div>
 
-            <div class="address" id="{{place.place_id}}">{{place.address}}</div>
-        </div>
-
+            <div class="address" id="{{place.place_id}}">{{place.address}}</div></div>
+        </div>   
     </div>
 
 </div>

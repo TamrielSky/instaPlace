@@ -59,10 +59,12 @@ angular.module('instaPlaceApp')
         this.searchNearByPlaces = function () {
 
             self.places = [];
+            self.normalizedPlaces = [];
+            self.filteredPlaces = [];
 
             $locationService.getLatLngFromAddress(this.currentAddress).then(function (position) {
-                self.position = position;
-
+                self.location= { coords: { latitude: position.lat(), longitude: position.lng() } };
+                self.currentLocation = angular.copy(self.location);
                 var promise = Promise.resolve();
 
                 var distances = [];
@@ -74,7 +76,7 @@ angular.module('instaPlaceApp')
                         if (places) {
                             self.places = self.places.concat(places);
                         }
-                        return $locationService.getNearByPlaces(self.position.lat(), self.position.lng(), 14, self.map, distance * 1609, self.searchFilter)
+                        return $locationService.getNearByPlaces(self.currentAddress, position.lat(), position.lng(), 14, self.map, distance * 1609, self.searchFilter)
                     });
 
                 });
@@ -119,25 +121,20 @@ angular.module('instaPlaceApp')
             console.log(self.filteredPlaces);
         }
 
-        this.hoverListItem = function (item) {
-
+        this.clickListItem = function (item) {
             var imgUrl = "";
             var formattedAddress;
             var placeName;
             var phoneNumber;
-            for (var i = 0; i < self.placeDetails.length; i++) {
-                if (self.placeDetails[i].place_id == item.target.id) {
-                    self.place = self.placeDetails[i];
-                }
-            }
-            /*    
-                $locationService.calculateAndDisplayRoute({lat: self.currentLocation.coords.latitude, lng: self.currentLocation.coords.longitude}, {lat: self.place.geometry.location.lat(), lng: self.place.geometry.location.lng()})
+            
+               
+                $locationService.calculateAndDisplayRoute({lat: self.currentLocation.coords.latitude, lng: self.currentLocation.coords.longitude}, {lat: item.location.latitude, lng: item.location.longitude})
                 .then(function(route){
                     console.log(route);
                                  directionsDisplay.setDirections(route);
        
                 })
-              */ /*  self.polylines = [
+               /*  self.polylines = [
          {
              id: 1,
              path: [

@@ -32,7 +32,6 @@ angular.module('instaPlaceApp')
             }
 
         };
-        this.currentAddress = "";
 
         // Try W3C Geolocation (Preferred)
         this.getLocation = function () {
@@ -71,7 +70,7 @@ angular.module('instaPlaceApp')
             });
         }
 
-        this.getNearByPlaces = function (lat, lng, zoom, currentMap, radius, filter) {
+        this.getNearByPlaces = function (currentAddress, lat, lng, zoom, currentMap, radius, filter) {
 
             function randomString(length, chars) {
                 var result = '';
@@ -85,14 +84,13 @@ angular.module('instaPlaceApp')
        
                 var params = {
                     callback: 'angular.callbacks._' + callbackId,
-                    location: address,
                     oauth_consumer_key: 'h_CfYvwNTS51n96wd1J8Yg', // consumer key
                     oauth_token: 'YQHmflBE5VKvzjCgO5N3YkmsB4xIUNsa', //Token
                     oauth_signature_method: 'HMAC-SHA1',
                     oauth_timestamp: new Date().getTime(),
                     oauth_nonce: randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),
                     term: yelp[filter[0]],
-                    cll: lat + "," + lng,
+                    ll: lat + "," + lng,
                     radius_filter: radius
 
                 };
@@ -118,7 +116,7 @@ angular.module('instaPlaceApp')
             var self = this;
 
             var promises = [];
-            promises.push($http.jsonp(this.yelpApi, { params: generateParams(lat, lng, this.currentAddress, this.yelpApi, radius, filter, this.categoryMap.yelp) }));
+            promises.push($http.jsonp(this.yelpApi, { params: generateParams(lat, lng, currentAddress, this.yelpApi, radius, filter, this.categoryMap.yelp) }));
 
             // promises.push($http.jsonp(this.yelpApi+'location='+this.currentAddress+'&sort=1&offset=20&limit=20&radius_filter='+radius, {params: params}));
             promises.push($http({ method: 'GET', url: this.fourSquareApi + 'radius=' + radius + '&categoryId=' + this.categoryMap.foursquare[filter[0]] + '&limit=50&ll=' + lat + ',' + lng + '&v=20160806&client_id=HTYPWDKP445LBUZJLZWDR3C4D1GCOB4WNPW20UUGSJH0C32R&client_secret=V5VSZEHG1O4VNIGZSFAM11ZLHB2WKOEWOPMADS0XF1QRQMML' }));
@@ -217,6 +215,7 @@ angular.module('instaPlaceApp')
         }
 
         this.calculateAndDisplayRoute = function (start, end) {
+
             return new Promise(function (resolve, reject) {
                 var directionsService = new google.maps.DirectionsService;
                 directionsService.route({
