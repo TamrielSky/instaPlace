@@ -18,6 +18,7 @@ angular.module('instaPlaceApp')
         self.markers = [];
         self.searchFilter = [];
         self.sliderModel = 0.2;
+        self.infoWindow = {show:false, name: null, address: null, coords: null};
         self.gmapCircle = {
             visible: true, 
             stroke: {
@@ -101,22 +102,18 @@ angular.module('instaPlaceApp')
                 });
             });
 
-              function populateResults(places) {
+            function populateResults(places) {
+                if (places) {
+                    for (var place in places) {
+                        if (results[place]) {
+                            results[place] = results[place].concat(places[place]);
+                        } else {
+                            results[place] = places[place];
+                        }
+                    }
+                }
 
-                  if (places) {
-                                for(var place in places) {
-                                    if(results[place]){
-
-                                        results[place] =  results[place].concat(places[place]);
-
-                                    } else {
-                                        results[place] = places[place];
-                                    }
-
-                                }
-                            }
-
-              }
+            }
 
         }
 
@@ -138,7 +135,7 @@ angular.module('instaPlaceApp')
             self.filteredPlaces = tempFilter;
             for (var count = 0; count < self.filteredPlaces.length; count++) {
 
-                self.markers.push({info: {address: self.filteredPlaces[count].address, name:self.filteredPlaces[count].name},  id: self.filteredPlaces[count].place_id, coords: { latitude: self.filteredPlaces[count].location.latitude, longitude: self.filteredPlaces[count].location.longitude }, key: self.markers.length + 1, filter: self.filteredPlaces[count].filter });
+                self.markers.push({info: {address: self.filteredPlaces[count].address, name:self.filteredPlaces[count].name},  id: self.filteredPlaces[count].place_id + ',' +count, coords: { latitude: self.filteredPlaces[count].location.latitude, longitude: self.filteredPlaces[count].location.longitude }, key: self.markers.length + 1, filter: self.filteredPlaces[count].filter });
             
             }
             console.log(self.filteredPlaces);
@@ -158,6 +155,21 @@ angular.module('instaPlaceApp')
 
                 })
         }
+
+        this.markerEvents = {click: function(marker) {
+                
+                self.infoWindow.coords = {latitude: marker.position.lat(), longitude: marker.position.lng()};
+                var key = marker.key.split(",")[0];
+                var index = marker.key.split(",")[1];
+
+                self.infoWindow.name = self.filteredPlaces[index].name;
+                self.infoWindow.address = self.filteredPlaces[index].address; 
+                angular.element('#'+key).triggerHandler('click');
+
+                self.infoWindow.show = false;
+                self.infoWindow.show = true;
+
+        }}
 
     }]);
 

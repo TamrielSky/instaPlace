@@ -3,11 +3,7 @@ angular.module('instaPlaceApp')
 
         // this.mapConfig = { center: { latitude: $localStorage.location.coords.latitude, longitude: $localStorage.location.coords.longitude }, zoom: 8 };
 
-        this.markerEvents = {click: function(marker) {
-
-                angular.element('#'+marker.key).triggerHandler('click');
-
-        }}
+        
 
         this.windowOptions = {visible: false};
         var styles = [

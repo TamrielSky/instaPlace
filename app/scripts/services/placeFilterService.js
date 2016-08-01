@@ -14,8 +14,6 @@ angular.module('instaPlaceApp')
         this.filterPlaces = function (results, currentLocation) {
             var placeList = [];
             var count = 0;
-
-debugger;
             for (var type in results) {
                 var places = results[type];
                 for (var resultCount = 0; resultCount < places.length; resultCount++) {

@@ -5,14 +5,14 @@
     <ui-gmap-marker coords="homePage.currentLocation.coords" options="mapConfig.currentLocationMarker.options" idkey="0">
     </ui-gmap-marker>
 
-    <ui-gmap-marker ng-repeat="m in homePage.markers" coords="m.coords" idkey="m.id" options="mapConfig.markers[m.filter]" events="mapConfig.markerEvents">
-
-        <ui-gmap-window options="mapConfig.windowOptions" closeClick="closeClick()">
+ <ui-gmap-window closeClick="closeClick()" show="homePage.infoWindow.show" coords="homePage.infoWindow.coords">
             <div>
-                <div>{{m.info.name}}</div>
-                <div>{{m.info.address}}</div>
+                <div>{{homePage.infoWindow.name}}</div>
+                <div>{{homePage.infoWindow.address}}</div>
             </div>
-        </ui-gmap-window>
+</ui-gmap-window>
+    <ui-gmap-marker ng-repeat="m in homePage.markers" coords="m.coords" idkey="m.id" options="mapConfig.markers[m.filter]" events="homePage.markerEvents">
+       
     </ui-gmap-marker>
 
 </ui-gmap-google-map> 
