@@ -1,15 +1,18 @@
-
 <ui-gmap-google-map id="mymap" center="homePage.location.coords" zoom="14" options="options">
-         <ui-gmap-marker coords="homePage.currentLocation.coords" options="mapConfig.currentLocationMarker.options" idkey="0">
-        </ui-gmap-marker>
+            <ui-gmap-circle center="homePage.currentLocation.coords" stroke="homePage.gmapCircle.stroke" fill="homePage.gmapCircle.fill" radius="homePage.sliderModel*1609"
+                visible="homePage.gmapCircle.visible" control="homePage.gmapCircle.control"></ui-gmap-circle>
 
-        <ui-gmap-marker ng-repeat="m in homePage.markers" coords="m.coords" idkey="m.key" options="mapConfig.markers[m.filter]">
-        </ui-gmap-marker>
+    <ui-gmap-marker coords="homePage.currentLocation.coords" options="mapConfig.currentLocationMarker.options" idkey="0">
+    </ui-gmap-marker>
 
-         <ui-gmap-polyline ng-repeat="p in homePage.polylines" path="p.path" stroke="p.stroke" visible='p.visible'
-                  geodesic='p.geodesic' fit="false" editable="p.editable" draggable="p.draggable" icons='p.icons'>
-         </ui-gmap-polyline>
-</ui-gmap-google-map>
+    <ui-gmap-marker ng-repeat="m in homePage.markers" coords="m.coords" idkey="m.id" options="mapConfig.markers[m.filter]" events="mapConfig.markerEvents">
 
+        <ui-gmap-window options="mapConfig.windowOptions" closeClick="closeClick()">
+            <div>
+                <div>{{m.info.name}}</div>
+                <div>{{m.info.address}}</div>
+            </div>
+        </ui-gmap-window>
+    </ui-gmap-marker>
 
-
+</ui-gmap-google-map> 

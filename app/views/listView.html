@@ -15,11 +15,11 @@
     <div class="panel-body">
 
         <div class="ui-list-view-bordered" ui-list-view="place in homePage.filteredPlaces | filter:search" > 
-            <div ng-click="homePage.clickListItem(place)">
-            <div class="place" id="{{place.place_id}}">{{place.name}}<span class="distance">{{(place.distance*0.000621371192).toFixed(2)}}mi</span></div>
+            <div id="{{place.place_id}}" ng-click="homePage.clickListItem(place, place.selected)" ng-class="{selected: place.selected}">
+            <div class="place" >{{place.name}}<span class="distance">{{place.distance}}mi</span></div>
             <div ng-if="place.rating" class="stars">
                
-              <img src="../images/{{Math.floor(place.rating)}}{{Math.round(place.rating)}}stars.png"></img>
+              <img src="../images/{{Math.floor(place.rating)}}{{Math.round(place.rating)}}stars.png"></img>     
                 
             </div>
 

@@ -43,7 +43,10 @@
 }
 
 .ui-list-view-bordered > .ui-list-view-cell:hover {
-background-color: #F6FcFf;
+
+      box-shadow: 1px 0px 0px 0px rgba(0, 0, 0, .50);
+      background: #eaeaea;
+
 
 }
 
@@ -59,10 +62,10 @@ background-color: #F6FcFf;
     background: #F9FaFb;
 }
 
-.ui-list-view-cell-content > ._selected {
-    background: #2A70DE;
-    color: white;
-    border-bottom: solid 1pt #eee;
+.ui-list-view-cell-content > .selected {
+          box-shadow: 1px 0px 0px 0px rgba(0, 0, 0, .50);
+      background: #eaeaea;
+
 }
 
 .stars > img {

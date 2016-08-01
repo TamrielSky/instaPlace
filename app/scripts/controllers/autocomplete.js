@@ -23,6 +23,7 @@ this.place = "";
     ];
 
     this.addFilter = function (place, homePage) {
+
       var place = place.split("-")[0];
       var boxShadow = "";
 

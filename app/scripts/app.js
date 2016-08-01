@@ -23,7 +23,8 @@ angular
     'ngAutocomplete',
     'ui.bootstrap-slider',
     'ngStorage',
-    'ui-listView'
+    'ui-listView',
+    'angular-loading-bar'
   ])
   .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     
