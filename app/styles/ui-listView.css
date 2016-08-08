@@ -68,6 +68,22 @@
 
 }
 
+.stars {
+  margin-bottom: 5px;
+}
+
+ .review {
+    opacity: 0.8;
+    font-size: small; 
+    margin-top: 5px;
+}
+
+.comment {
+    width:12px;
+    height:12px; 
+    margin-right: 3px;
+}
+
 .stars > img {
     width: 90px;
 }

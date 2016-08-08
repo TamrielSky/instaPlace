@@ -10,6 +10,7 @@
  */
 angular
   .module('instaPlaceApp', [
+    '720kb.tooltips',
     'ngAnimate',
     'ngAria',
     'ngCookies',

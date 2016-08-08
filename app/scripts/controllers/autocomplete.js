@@ -2,13 +2,14 @@
 
 /**
  * @ngdoc function
- * @name instaPlaceApp.controller:MainCtrl
+ * @name instaPlaceApp.controller:autocompleteCtrl
  * @description
- * # MainCtrl
+ * # autocompleteCtrl
  * Controller of the instaPlaceApp
  */
 angular.module('instaPlaceApp')
   .controller('autocompleteCtrl', function () {
+
 
 this.place = "";
      this.filterArray = [];
@@ -16,10 +17,12 @@ this.place = "";
     this.placeIcons = [
       { name: "restaurant", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
       { name: "atm", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
-      { name: "airport", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
+    //  { name: "airport", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
       { name: "bar", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
       { name: "hospital", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
-      { name: "grocery", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" }
+      { name: "grocery", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
+      { name: "gas_station", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" }
+
     ];
 
     this.addFilter = function (place, homePage) {

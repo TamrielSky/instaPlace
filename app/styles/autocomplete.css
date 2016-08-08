@@ -69,6 +69,11 @@ ul input {
 
 :focus { outline: none; } 
 
+.slider .tooltip-main {
+    opacity: 1;
+}
+
+
 
 
 

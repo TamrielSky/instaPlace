@@ -12,12 +12,12 @@ angular.module('instaPlaceApp')
         
         var self = this;
         var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
-
+        self.loadingStyle = {'visibility': 'visible'};
         self.filteredPlaces = null;
         self.normalizedPlaces = [];
         self.markers = [];
         self.searchFilter = [];
-        self.sliderModel = 0.2;
+        self.sliderModel = 1;
         self.infoWindow = {show:false, name: null, address: null, coords: null};
         self.gmapCircle = {
             visible: true, 
@@ -40,6 +40,15 @@ angular.module('instaPlaceApp')
 
         });
 
+        $scope.$on('update_location', function (event, result) {
+
+            self.location = { coords: { latitude: result.geometry.location.lat(), longitude: result.geometry.location.lng() } };
+            self.currentLocation = angular.copy(self.location);
+            self.filteredPlaces = [];
+
+            
+        });
+
         $locationService.getLocation().then(function (position) {
             //.location = position;
             var height = $('.mainview').height() - $('.autocomplete').height() - 25;
@@ -49,24 +58,21 @@ angular.module('instaPlaceApp')
 
             position = { coords: { latitude: position.coords.latitude, longitude: position.coords.longitude } };
             self.location = position;
+            self.loadingStyle = {'visibility': 'hidden'};
             return $locationService.getAddress(position.coords)
         })
-            .then(function (address) {
+        .then(function (address) {
                 // $localStorage.address = address;
-                self.address = address;
+                self.currentAddress = address;
                 self.currentLocation = angular.copy(self.location);
-
+                
                 $scope.$apply();
 
         });
 
-        this.setLocation = function () {
-             
-            self.location =   angular.copy(self.currentLocation);
-            this.currentAddress = self.address;
-        }
-
         this.searchNearByPlaces = function () {
+
+            self.loadingStyle = {'visibility': 'visible'};
 
             var results = {};
             var promise = Promise.resolve();
@@ -91,13 +97,13 @@ angular.module('instaPlaceApp')
 
                 promise.then(function (places) {
                     populateResults(places);
-                //    results[self.searchFilter[0]] = results[self.searchFilter[0]].concat(placeArray);
-                    self.normalizedPlaces = ($placeFilterService.eliminateDuplicates(self.normalizedPlaces.concat($placeFilterService.filterPlaces(results, self.location)))).sort($placeFilterService.compare);
+                    self.normalizedPlaces = $placeFilterService.sortByProperty($placeFilterService.eliminateDuplicates($placeFilterService.filterPlaces(results, self.location)), "distance");
                     console.log(self.normalizedPlaces);
                     $scope.$apply();
-                    self.filterPlaces(null, self.sliderModel);
+                    self.filterPlacesByRadius(null, self.sliderModel);
                     $scope.$apply();
                     directionsDisplay.setMap(self.map);
+                    self.loadingStyle = {'visibility': 'hidden'};
 
                 });
             });
@@ -117,7 +123,15 @@ angular.module('instaPlaceApp')
 
         }
 
-        this.filterPlaces = function (event, value) {
+        this.sortPlaces = function (places, property, order) {
+            if (order)
+                self.filteredPlaces = $placeFilterService.sortByProperty(places, property).reverse();
+            else
+                self.filteredPlaces = $placeFilterService.sortByProperty(places, property);
+        }
+
+        this.filterPlacesByRadius = function (event, value) {
+
             var tempFilter = [];
             self.filteredPlaces = [];
             self.markers = [];
@@ -156,20 +170,40 @@ angular.module('instaPlaceApp')
                 })
         }
 
-        this.markerEvents = {click: function(marker) {
-                
-                self.infoWindow.coords = {latitude: marker.position.lat(), longitude: marker.position.lng()};
+        this.openInfoWindow = function (marker) {
+
+            self.infoWindow.coords = { latitude: marker.position.lat(), longitude: marker.position.lng() };
+            var index = marker.key.split(",")[1];
+
+            self.infoWindow.name = self.filteredPlaces[index].name;
+            self.infoWindow.address = self.filteredPlaces[index].address;
+
+            self.infoWindow.show = false;
+            self.infoWindow.show = true;
+
+
+        }
+        
+        this.markerEvents = {
+            
+            mouseover: function (marker) {
+
+                self.openInfoWindow(marker);
+
+            },
+            
+            click: function (marker) {
+
+            self.infoWindow.show = false;
+            self.infoWindow.show = true;
+
+                self.openInfoWindow(marker);
                 var key = marker.key.split(",")[0];
-                var index = marker.key.split(",")[1];
+                angular.element('#' + key).triggerHandler('click');
 
-                self.infoWindow.name = self.filteredPlaces[index].name;
-                self.infoWindow.address = self.filteredPlaces[index].address; 
-                angular.element('#'+key).triggerHandler('click');
+            }
 
-                self.infoWindow.show = false;
-                self.infoWindow.show = true;
-
-        }}
+        }
 
     }]);
 

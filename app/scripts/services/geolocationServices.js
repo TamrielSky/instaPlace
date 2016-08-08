@@ -20,7 +20,8 @@ angular.module('instaPlaceApp')
             'bar': '4bf58dd8d48988d116941735',
             'airport': '4bf58dd8d48988d1ed931735',
             'hospital': '4bf58dd8d48988d196941735',
-            'atm': '52f2ab2ebcbc57f1066b8b56'
+            'atm': '52f2ab2ebcbc57f1066b8b56',
+            'gas_station': '4bf58dd8d48988d113951735'
             },
             'yelp':{
             'restaurant': 'restaurants',
@@ -28,7 +29,8 @@ angular.module('instaPlaceApp')
             'bar': 'bars',
             'airport': 'airports',
             'hospital': 'hospitals',
-            'atm': 'atm'
+            'atm': 'atm',
+            'gas_station': 'servicestations'
             }
 
         };

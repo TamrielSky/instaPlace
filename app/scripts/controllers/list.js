@@ -11,6 +11,6 @@ angular.module('instaPlaceApp')
   .controller('listCtrl', ['$scope', function ($scope) {
 
     $scope.Math = window.Math;
-    
+    $scope.selectedItem = false;
 
   }]);

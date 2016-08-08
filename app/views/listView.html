@@ -2,29 +2,30 @@
 
     <div class="panel-heading">
         <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Sort <span class="caret"></span>
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="true">Sort <span class="caret"></span>
   </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-    <li><a href="#">Popularity</a></li>
-    <li><a href="#">Distance</a></li>
-  </ul>
-</div>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a ng-click="homePage.sortPlaces(homePage.filteredPlaces, 'rating', true)" href="#">Popularity</a></li>
+                <li><a ng-click="homePage.sortPlaces(homePage.filteredPlaces, 'distance', false)" href="#">Distance</a></li>
+            </ul>
+        </div>
         <input class="form-control" ng-model="search.name" placeholder="Search place.." />
     </div>
 
     <div class="panel-body">
 
-        <div class="ui-list-view-bordered" ui-list-view="place in homePage.filteredPlaces | filter:search" > 
-            <div id="{{place.place_id}}" ng-click="homePage.clickListItem(place, place.selected)" ng-class="{selected: place.selected}">
-            <div class="place" >{{place.name}}<span class="distance">{{place.distance}}mi</span></div>
-            <div ng-if="place.rating" class="stars">
-               
-              <img src="../images/{{Math.floor(place.rating)}}{{Math.round(place.rating)}}stars.png"></img>     
-                
-            </div>
+        <div class="ui-list-view-bordered" ui-list-view="place in homePage.filteredPlaces | filter:search">
+            <div id="{{place.place_id}}" ng-click="homePage.clickListItem(place, place.selected); place.selected" ng-class="{selected: place.selected}">
+                <div class="place">{{place.name}}<span class="distance">{{place.distance}}mi</span></div>
+                <div ng-if="place.rating" class="stars">
+                    <img src="../images/{{Math.floor(place.rating)}}{{Math.round(place.rating)}}stars.png"></img>
+                </div>
+                <div class="address" id="{{place.place_id}}">{{place.address}}</div>
+                <div style="display: inline-block;" ng-if="place.selected && place.review"><img class="comment"  src="../images/comment.png"></img><span class="review">{{place.review}}</span></div>
 
-            <div class="address" id="{{place.place_id}}">{{place.address}}</div></div>
-        </div>   
+            </div>
+        </div>
     </div>
 
 </div>

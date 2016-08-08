@@ -14,6 +14,7 @@ angular.module('instaPlaceApp')
         this.filterPlaces = function (results, currentLocation) {
             var placeList = [];
             var count = 0;
+
             for (var type in results) {
                 var places = results[type];
                 for (var resultCount = 0; resultCount < places.length; resultCount++) {
@@ -129,7 +130,7 @@ angular.module('instaPlaceApp')
 
                 if(newPlaces[places[i].distance + "," + places[i].name]) {
 
-                    if(places[i].rating) {
+                    if(places[i].rating && places[i].review) {
 
                        newPlaces[places[i].distance + "," + places[i].name] = places[i];
 
@@ -171,13 +172,15 @@ angular.module('instaPlaceApp')
             }
         }
 
-        this.compare = function (a, b) {
+        this.sortByProperty = function (places, property) {
 
-            if (a.distance == b.distance) {
-                return 0;
-            } else {
-                return a.distance < b.distance ? -1 : 1;
-            }
+            return places.sort(function (a, b) {
+                if (a[property] == b[property]) {
+                    return 0;
+                } else {
+                    return a[property] < b[property] ? -1 : 1;
+                }
 
+            });
         }
     });

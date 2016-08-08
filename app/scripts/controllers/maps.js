@@ -43,6 +43,13 @@ angular.module('instaPlaceApp')
 
 
         this.markers = {
+            'gas_station': {
+                options: {
+                    icon: {
+                        url: '../images/gas_station-marker.png', scaledSize: new google.maps.Size(30, 30)
+                    },
+                }
+            },
             'restaurant': {
                 options: {
                     icon: {

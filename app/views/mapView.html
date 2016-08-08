@@ -6,9 +6,9 @@
     </ui-gmap-marker>
 
  <ui-gmap-window closeClick="closeClick()" show="homePage.infoWindow.show" coords="homePage.infoWindow.coords">
-            <div>
-                <div>{{homePage.infoWindow.name}}</div>
-                <div>{{homePage.infoWindow.address}}</div>
+            <div class="infoWindow">
+                <div id="title">{{homePage.infoWindow.name}}</div>
+                <div id="info">{{homePage.infoWindow.address}}</div>
             </div>
 </ui-gmap-window>
     <ui-gmap-marker ng-repeat="m in homePage.markers" coords="m.coords" idkey="m.id" options="mapConfig.markers[m.filter]" events="homePage.markerEvents">
