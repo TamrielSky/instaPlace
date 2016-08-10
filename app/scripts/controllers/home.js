@@ -185,17 +185,10 @@ angular.module('instaPlaceApp')
         }
         
         this.markerEvents = {
-            
-            mouseover: function (marker) {
 
-                self.openInfoWindow(marker);
-
-            },
-            
             click: function (marker) {
 
-            self.infoWindow.show = false;
-            self.infoWindow.show = true;
+                self.infoWindow.show = true;
 
                 self.openInfoWindow(marker);
                 var key = marker.key.split(",")[0];
