@@ -3,7 +3,6 @@ angular.module('instaPlaceApp')
 
         // this.mapConfig = { center: { latitude: $localStorage.location.coords.latitude, longitude: $localStorage.location.coords.longitude }, zoom: 8 };
 
-        
 
         this.windowOptions = {visible: false};
         var styles = [

@@ -25,9 +25,7 @@ angular.module('instaPlaceApp')
                             for (var j = 0; j < places[resultCount].data.businesses.length; j++) {
                                 placeList[count] = {};
 
-                                if (!places[resultCount].data.businesses[j].distance) {
-                                    debugger;
-                                }
+                               
                                 placeList[count]["distance"] = ((places[resultCount].data.businesses[j].distance) * 0.000621371192).toFixed(2);
                                 placeList[count]["name"] = places[resultCount].data.businesses[j].name;
                                 placeList[count]["contact"] = places[resultCount].data.businesses[j].display_phone;
@@ -59,10 +57,6 @@ angular.module('instaPlaceApp')
 
                                 placeList[count] = {};
                                 var venue = placeItems[j].venue;
-
-                                if (!venue.location.distance) {
-                                    debugger;
-                                }
 
                                 placeList[count]["distance"] = ((venue.location.distance) * 0.000621371192).toFixed(2);
 

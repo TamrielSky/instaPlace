@@ -120,8 +120,6 @@ angular.module('instaPlaceApp')
 
             var promises = [];
             promises.push($http.jsonp(this.yelpApi, { params: generateParams(lat, lng, currentAddress, this.yelpApi, radius, filter, this.categoryMap.yelp) }));
-
-            // promises.push($http.jsonp(this.yelpApi+'location='+this.currentAddress+'&sort=1&offset=20&limit=20&radius_filter='+radius, {params: params}));
             promises.push($http({ method: 'GET', url: this.fourSquareApi + 'radius=' + radius + '&categoryId=' + this.categoryMap.foursquare[filter] + '&limit=50&ll=' + lat + ',' + lng + '&v=20160806&client_id=HTYPWDKP445LBUZJLZWDR3C4D1GCOB4WNPW20UUGSJH0C32R&client_secret=V5VSZEHG1O4VNIGZSFAM11ZLHB2WKOEWOPMADS0XF1QRQMML' }));
 
             promises.push(new Promise(function (resolve, reject) {
@@ -165,15 +163,7 @@ angular.module('instaPlaceApp')
             var self = this;
             var placeDetails = [];
             return new Promise(function (resolve, reject) {
-                /*
-                              var promises = [];
-                              for (var i = 0; i < places.length; i++) {
-                                  promises.push(self.getPlaceDetailsById(places[i].place_id, places[i].geometry.location.lat(), places[i].geometry.location.lng())); // push the Promises to our array
-                              }
-                              Promise.all(promises).then(function (dataArr) {
-                                  resolve(dataArr);
-                              });
-                */
+            
                 var prevPromise = Promise.resolve();
                 places.forEach(function (place) {  // loop through each title
                     prevPromise = prevPromise.then(function () { // prevPromise changes in each iteration
@@ -188,10 +178,7 @@ angular.module('instaPlaceApp')
                 prevPromise.then(function () {
                     resolve(placeDetails);
                 });
-                /*self.getPlaceDetailsById(places[0].place_id, places[0].geometry.location.lat(), places[0].geometry.location.lng()).then(function (dataArr) {
-                    resolve(dataArr);
-                });
-                */
+          
             });
         }
 
