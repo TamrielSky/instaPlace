@@ -1,9 +1,6 @@
 angular.module('instaPlaceApp')
     .controller('mapsCtrl', ['$localStorage', '$scope', function ($localStorage, $scope) {
 
-        // this.mapConfig = { center: { latitude: $localStorage.location.coords.latitude, longitude: $localStorage.location.coords.longitude }, zoom: 8 };
-
-
         this.windowOptions = {visible: false};
         var styles = [
             {
@@ -27,12 +24,9 @@ angular.module('instaPlaceApp')
             }
         ];
 
-
-
         $scope.options = {
             styles: styles
         };
-
 
         this.currentLocationMarker = {
             options: {
