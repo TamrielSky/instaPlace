@@ -7,16 +7,14 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
 
-      <!-- endbower -->
-    <!-- endbuild -->
 
-    
-    <!-- build:css(.tmp) styles/main.css -->
+  <!-- build:css(.tmp) styles/main.css -->
 
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/maps.css">
@@ -27,7 +25,7 @@
   <link rel="stylesheet" href="styles/loading-bar.css">
   <link rel="stylesheet" href="styles/angular-tooltips.css">
 
-    <!-- endbuild -->
+  <!-- endbuild -->
 
 
 
@@ -45,9 +43,10 @@
 
   </div>
 
+  <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyB1G7_SWU14g5CNFpu8H7Dnob0DPbSDS6Y&libraries=places'></script>
 
   <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
+  <!-- bower:js -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -59,6 +58,8 @@
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
   <script src="bower_components/angular-touch/angular-touch.js"></script>
+  <!-- endbower -->
+
   <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
   <script src="bower_components/angular-ui-router-styles/ui-router-styles.js"></script>
   <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
@@ -73,13 +74,10 @@
   <script src="bower_components/angular-loading-bar/src/loading-bar.js"></script>
   <script src="bower_components/angular-tooltips/dist/angular-tooltips.js"></script>
 
-    <!-- endbower -->
-    <!-- endbuild -->
-
+  <!-- endbuild -->
 
   <!-- build:js({.tmp,app}) scripts/scripts.js -->
 
-  <script src='https://maps.googleapis.com/maps/api/js?libraries=places'></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/controllers/maps.js"></script>
   <script src="scripts/controllers/home.js"></script>
@@ -89,7 +87,7 @@
   <script src="scripts/controllers/autocomplete.js"></script>
   <script src="scripts/services/geolocationServices.js"></script>
   <script src="scripts/services/placeFilterService.js"></script>
-        <!-- endbuild -->
+  <!-- endbuild -->
 
 </body>
 

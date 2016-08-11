@@ -8,7 +8,7 @@
  * Controller of the instaPlaceApp
  */
 angular.module('instaPlaceApp')
-    .controller('homeCtrl', ['geolocationService', 'placeFilterService', '$localStorage', '$scope', 'uiGmapIsReady', function ($locationService, $placeFilterService, $localStorage, $scope, uiGmapIsReady) {
+    .controller('homeCtrl', ['geolocationService', 'placeFilterService', '$localStorage', '$scope', 'uiGmapIsReady', '$timeout', function ($locationService, $placeFilterService, $localStorage, $scope, uiGmapIsReady, $timeout) {
         
         var self = this;
         var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
@@ -33,23 +33,9 @@ angular.module('instaPlaceApp')
             control: {}
         };
 
-        uiGmapIsReady.promise()
-            .then(function (map_instances) {
 
-                self.map = map_instances[0].map;            // get map object through array object returned by uiGmapIsReady promise
-
-        });
-
-        $scope.$on('update_location', function (event, result) {
-
-            self.location = { coords: { latitude: result.geometry.location.lat(), longitude: result.geometry.location.lng() } };
-            self.currentLocation = angular.copy(self.location);
-            self.filteredPlaces = [];
-
-            
-        });
-
-        $locationService.getLocation().then(function (position) {
+               
+ $locationService.getLocation().then(function (position) {
             //.location = position;
             var height = $('.mainview').height() - $('.autocomplete').height() - 25;
             $('.angular-google-map-container').height(height);
@@ -68,6 +54,22 @@ angular.module('instaPlaceApp')
                 
                 $scope.$apply();
 
+        });
+
+        uiGmapIsReady.promise()
+            .then(function (map_instances) {
+
+                self.map = map_instances[0].map;            // get map object through array object returned by uiGmapIsReady promise
+
+        });
+
+        $scope.$on('update_location', function (event, result) {
+
+            self.location = { coords: { latitude: result.geometry.location.lat(), longitude: result.geometry.location.lng() } };
+            self.currentLocation = angular.copy(self.location);
+            self.filteredPlaces = [];
+
+            
         });
 
         this.searchNearByPlaces = function () {
