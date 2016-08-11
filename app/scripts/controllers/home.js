@@ -13,6 +13,7 @@ angular.module('instaPlaceApp')
         var self = this;
         var directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
         self.loadingStyle = { 'visibility': 'visible' };
+        self.mapZoom = 14;
         self.filteredPlaces = null;
         self.normalizedPlaces = [];
         self.markers = [];
@@ -39,10 +40,9 @@ angular.module('instaPlaceApp')
             $('.angular-google-map-container').height(height);
             $('.ui-list-view').height($('.mapWrapper').height() - 70);
 
-
             position = { coords: { latitude: position.coords.latitude, longitude: position.coords.longitude } };
             self.location = position;
-            self.loadingStyle = { 'visibility': 'hidden' };
+            self.setLoadingVisible(false);
             return $locationService.getAddress(position.coords)
         })
         .then(function (address) {
@@ -61,15 +61,26 @@ angular.module('instaPlaceApp')
 
         $scope.$on('update_location', function (event, result) {
 
+            self.mapZoom = 14;
             self.location = { coords: { latitude: result.geometry.location.lat(), longitude: result.geometry.location.lng() } };
             self.currentLocation = angular.copy(self.location);
             self.filteredPlaces = [];
 
         });
+        
+        this.setLoadingVisible = function (isVisible) {
+
+            if (isVisible) {
+                self.loadingStyle['visibility'] = 'visible';
+            }
+            else {
+                self.loadingStyle['visibility'] = 'hidden';
+            }
+        }
 
         this.searchNearByPlaces = function () {
 
-            self.loadingStyle = { 'visibility': 'visible' };
+            self.setLoadingVisible(true);
 
             var results = {};
             var promise = Promise.resolve();
@@ -100,7 +111,7 @@ angular.module('instaPlaceApp')
                     self.filterPlacesByRadius(null, self.sliderModel);
                     $scope.$apply();
                     directionsDisplay.setMap(self.map);
-                    self.loadingStyle = { 'visibility': 'hidden' };
+                    self.setLoadingVisible(false);
 
                 });
             });

@@ -44,10 +44,8 @@ this.place = "";
             boxShadow = "3px 3px 2px 2px rgba(0, 0, 0, 0.4)";
             this.placeIcons[count].name = this.placeIcons[count].name.split("-")[0];
             this.filterArray.splice(index, 1);
-
           }
           this.placeIcons[count].boxShadow = boxShadow;
-
         }
       }
       homePage.searchFilter = this.filterArray;
