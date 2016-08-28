@@ -36,9 +36,9 @@ angular.module('instaPlaceApp')
 
         $locationService.getLocation().then(function (position) {
             //need to find a better way 
-            var height = $('.mainview').height() - $('.autocomplete').height() - 25;
+            var height = $('.mainview').height() - $('.autocomplete').height();
             $('.angular-google-map-container').height(height);
-            $('.ui-list-view').height($('.mapWrapper').height() - 70);
+            $('.ui-list-view').height(height-$('.mainListView').height());
 
             position = { coords: { latitude: position.coords.latitude, longitude: position.coords.longitude } };
             self.location = position;
@@ -85,7 +85,6 @@ angular.module('instaPlaceApp')
             var results = {};
             var promise = Promise.resolve();
 
-
             $locationService.getLatLngFromAddress(this.currentAddress).then(function (position) {
                 self.location = { coords: { latitude: position.lat(), longitude: position.lng() } };
                 self.currentLocation = angular.copy(self.location);
@@ -106,10 +105,7 @@ angular.module('instaPlaceApp')
                 promise.then(function (places) {
                     populateResults(places);
                     self.normalizedPlaces = $placeFilterService.sortByProperty($placeFilterService.eliminateDuplicates($placeFilterService.filterPlaces(results, self.location)), "distance");
-                    console.log(self.normalizedPlaces);
-                    $scope.$apply();
                     self.filterPlacesByRadius(null, self.sliderModel);
-                    $scope.$apply();
                     directionsDisplay.setMap(self.map);
                     self.setLoadingVisible(false);
 
@@ -131,13 +127,21 @@ angular.module('instaPlaceApp')
 
         }
 
-        this.sortPlaces = function (places, property, order) {
-            if (order)
+        this.sortPlaces = function (property, order) {
+            
+            var places = angular.copy(self.filteredPlaces);
+            self.filteredPlaces = [];
+            if (order) {
                 self.filteredPlaces = $placeFilterService.sortByProperty(places, property).reverse();
-            else
+            }
+            else {
                 self.filteredPlaces = $placeFilterService.sortByProperty(places, property);
+            }
+            this.setupMarkers();
+
         }
 
+     
         this.filterPlacesByRadius = function (event, value) {
 
             var tempFilter = [];
@@ -155,12 +159,16 @@ angular.module('instaPlaceApp')
 
             }
             self.filteredPlaces = tempFilter;
+            this.setupMarkers();
+        }
+
+        this.setupMarkers = function () {
             for (var count = 0; count < self.filteredPlaces.length; count++) {
 
                 self.markers.push({ info: { address: self.filteredPlaces[count].address, name: self.filteredPlaces[count].name }, id: self.filteredPlaces[count].place_id + ',' + count, coords: { latitude: self.filteredPlaces[count].location.latitude, longitude: self.filteredPlaces[count].location.longitude }, key: self.markers.length + 1, filter: self.filteredPlaces[count].filter });
 
             }
-            console.log(self.filteredPlaces);
+
         }
 
         this.clickListItem = function (item) {
