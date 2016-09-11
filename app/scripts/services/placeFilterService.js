@@ -29,7 +29,7 @@ angular.module('instaPlaceApp')
                                 placeList[count]["distance"] = ((places[resultCount].data.businesses[j].distance) * 0.000621371192).toFixed(2);
                                 placeList[count]["name"] = places[resultCount].data.businesses[j].name;
                                 placeList[count]["contact"] = places[resultCount].data.businesses[j].display_phone;
-                                placeList[count]["rating"] = places[resultCount].data.businesses[j].rating;
+                                placeList[count]["rating"] = places[resultCount].data.businesses[j].rating ? places[resultCount].data.businesses[j].rating : 0;
                                 placeList[count]["review"] = places[resultCount].data.businesses[j].snippet_text;
 
                                 var address = [];
@@ -69,7 +69,7 @@ angular.module('instaPlaceApp')
                                 address = address.join();
                                 placeList[count]["address"] = address;
 
-                                placeList[count]["rating"] = venue.rating * 5 / 10;
+                                placeList[count]["rating"] =  venue.rating ? (venue.rating * 5 / 10) : 0;
                                 placeList[count]["name"] = venue.name;
                                 placeList[count]["location"] = { latitude: venue.location.lat, longitude: venue.location.lng };
                                 placeList[count]["contact"] = venue.contact.formattedPhone;
@@ -92,8 +92,8 @@ angular.module('instaPlaceApp')
                         for (var i = 0; i < googlePlaces.length; i++) {
                             placeList[count] = {};
                             var place = googlePlaces[i];
-
-                            placeList[count]["rating"] = place.rating;
+                           
+                            placeList[count]["rating"] = place.rating ? place.rating : 0;
                             placeList[count]["name"] = place.name;
                             placeList[count]["location"] = { latitude: place.geometry.location.lat(), longitude: place.geometry.location.lng() };
                             placeList[count]["distance"] = ((this.calcDistance(currentLocation.coords.latitude, currentLocation.coords.longitude, place.geometry.location.lat(), place.geometry.location.lng())) * 0.000621371192).toFixed(2);
@@ -169,6 +169,7 @@ angular.module('instaPlaceApp')
         this.sortByProperty = function (places, property) {
 
             return places.sort(function (a, b) {
+
                 if (a[property] == b[property]) {
                     return 0;
                 } else {

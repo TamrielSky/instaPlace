@@ -6,7 +6,7 @@
         <li><input type="text" placeholder="Enter a location" ng-model="homePage.currentAddress" class="searchBox" ng-autocomplete
                 ng-model="autocomplete" options="options" details="details" /></li>
         <li>
-            <slider ng-model="homePage.sliderModel" min="1" step="0.2" max="25" class="customSlider" on-stop-slide="homePage.filterPlacesByRadius($event, value)"></slider>
+            <slider ng-model="homePage.sliderModel" min="0.6" step="0.2" max="25" class="customSlider" on-stop-slide="homePage.filterPlacesByRadius($event, value)"></slider>
         </li>
         <li><button type="button" class="btn btn-danger" ng-click="homePage.searchNearByPlaces()">Search</button></li>
         <div class="filters" ng-repeat="placeIcon in autocomplete.placeIcons">
