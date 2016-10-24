@@ -1,0 +1,48 @@
+<div class="col-md-11">
+
+	<div class="row">
+		<div class="main-title">
+			<img ng-src="../images/globe.png" width="200px"></img>
+			<h1> Travel Radar </h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="centering text-center">
+
+			<!-- <ul class="center-panel">
+
+        <li><input type="text" placeholder="location" /></li>
+        <li><input type="text" placeholder="Enter a location" /></li>
+        <li><button type="button" class="btn btn-danger" ng-click="main.searchNearByPlaces()">Search</button></li>
+
+    </ul> -->
+
+			<div class="col-md-2">
+				<div class="centering location-button" style="height: 65px; width: 65px;" ng-click="main.setLocation()"></div>
+
+			</div>
+
+			<div class="col-md-4">
+				<input class="input-left" type="text" placeholder="Where are you at" ng-model="main.source" ng-autocomplete ng-model="autocomplete"
+					options="options" details="details" />
+			</div>
+
+			<div class="col-md-4">
+				<input class="input-right" type="text" placeholder="Where are you going" ng-model="main.destination" ng-autocomplete ng-model="autocomplete"
+					options="options" details="details" />
+			</div>
+			<div class="col-md-2">
+				<button type="button" ng-click="main.searchPlacesAlongRoute(main.source, main.destination)">Search</button>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="col-md-1">
+
+	<div ui-view="placeIconView" ng-init="main.setIconConfig(55)">
+	</div>
+
+</div>

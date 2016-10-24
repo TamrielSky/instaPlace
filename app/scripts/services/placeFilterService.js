@@ -178,4 +178,25 @@ angular.module('instaPlaceApp')
 
             });
         }
+
+        this.filterPlacesByBounds = function (places, bounds) {
+
+            var filteredPlaces = [];
+
+            bounds.forEach(function (box) {
+                for (var count = 0; count < places.length; count++) {
+                    var point = new google.maps.LatLng(places[count].location.latitude, places[count].location.longitude);
+
+                    var southWest = new google.maps.LatLng(box.getSouthWest().lat(), box.getSouthWest().lng());
+                    var northEast = new google.maps.LatLng(box.getNorthEast().lat(), box.getNorthEast().lng());
+                    var boxBounds = new google.maps.LatLngBounds(southWest, northEast);
+
+                    if (boxBounds.contains(point)) {
+                        filteredPlaces.push(places[count]);
+                    }
+                }
+            })
+
+            return filteredPlaces;
+        }
     });

@@ -8,17 +8,18 @@
  * Controller of the instaPlaceApp
  */
 angular.module('instaPlaceApp')
-    .controller('homeCtrl', ['geolocationService', 'placeFilterService', '$localStorage', '$scope', 'uiGmapIsReady', '$timeout', function ($locationService, $placeFilterService, $localStorage, $scope, uiGmapIsReady, $timeout) {
+    .controller('homeCtrl', ['routeBoxerService', 'geolocationService', 'placeFilterService', '$localStorage', '$scope', 'uiGmapIsReady', '$interval', '$stateParams', function ($routeBoxerService, $locationService, $placeFilterService, $localStorage, $scope, uiGmapIsReady, $interval, $stateParams) {
 
-        var self = this;
+        var self = this;   
         var directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
-        self.loadingStyle = { 'visibility': 'visible' };
+        var directionsService = new google.maps.DirectionsService();
+
+        self.loadingStyle = { 'visibility': 'hidden' };
         self.mapZoom = 14;
         self.filteredPlaces = null;
         self.normalizedPlaces = [];
         self.markers = [];
         self.searchFilter = [];
-        self.sliderModel = 1;
         self.infoWindow = { show: false, name: null, address: null, coords: null };
         self.gmapCircle = {
             visible: true,
@@ -33,43 +34,12 @@ angular.module('instaPlaceApp')
             },
             control: {}
         };
+ 
+        this.setLocation = function () {
+            this.sourceLocation = self.currentAddress;
+        }
 
-        $locationService.getLocation().then(function (position) {
-            //need to find a better way 
-            var height = $('.mainview').height() - $('.autocomplete').height();
-            $('.angular-google-map-container').height(height);
-            $('.ui-list-view').height(height-$('.mainListView').height());
-
-            position = { coords: { latitude: position.coords.latitude, longitude: position.coords.longitude } };
-            self.location = position;
-            self.setLoadingVisible(false);
-            return $locationService.getAddress(position.coords)
-        })
-        .then(function (address) {
-            self.currentAddress = address;
-            self.currentLocation = angular.copy(self.location);
-
-            $scope.$apply();
-        });
-
-        uiGmapIsReady.promise()
-            .then(function (map_instances) {
-
-                self.map = map_instances[0].map;      // get map object through array object returned by uiGmapIsReady promise
-
-        });
-
-        $scope.$on('update_location', function (event, result) {
-
-            self.mapZoom = 14;
-            self.location = { coords: { latitude: result.geometry.location.lat(), longitude: result.geometry.location.lng() } };
-            self.currentLocation = angular.copy(self.location);
-            self.filteredPlaces = [];
-
-        });
-        
         this.setLoadingVisible = function (isVisible) {
-
             if (isVisible) {
                 self.loadingStyle['visibility'] = 'visible';
             }
@@ -78,52 +48,66 @@ angular.module('instaPlaceApp')
             }
         }
 
-        this.searchNearByPlaces = function () {
+        this.searchNearByPlaces = function (source, destination, searchFilter) {
+
+            if(self.searchFilter.length< 1) {
+                self.searchFilter = searchFilter;
+            }
+            self.filteredPlaces = [];
 
             self.setLoadingVisible(true);
 
             var results = {};
             var promise = Promise.resolve();
 
-            $locationService.getLatLngFromAddress(this.currentAddress).then(function (position) {
-                self.location = { coords: { latitude: position.lat(), longitude: position.lng() } };
-                self.currentLocation = angular.copy(self.location);
-                self.searchFilter.forEach(function (filter) {
+            var promises = [];
 
-                    var searchConfig = [{ type: filter, distance: 25 }, { type: filter, distance: 20 }, { type: filter, distance: 15 }, { type: filter, distance: 10 }, { type: filter, distance: 5 }];
+            promises.push($locationService.getLatLngFromAddress(source));
+            promises.push($locationService.getLatLngFromAddress(destination));
+            Promise.all(promises).then(function (locations) {
 
-                    searchConfig.forEach(function (config) {
-                        promise = promise.then(function (places) {
-                            populateResults(places);
-                            return $locationService.getNearByPlaces(self.currentAddress, position.lat(), position.lng(), 14, self.map, config.distance * 1609, config.type);
+                var request = {
+                    origin: locations[0],
+                    destination: locations[1],
+                    travelMode: 'DRIVING'
+                };
+
+                directionsService.route(request, function (response, status) {
+
+                    if (status == 'OK') {
+                        var list = $routeBoxerService.routeBoxer.box(response.routes[0].overview_path, 0.3);
+
+                        list.forEach(function (item) {
+
+                            var rectangle = new google.maps.Rectangle({
+                                strokeColor: '#FF0000',
+                                strokeOpacity: 0.8,
+                                strokeWeight: 2,
+                                fillColor: '#FF0000',
+                                fillOpacity: 0.35,
+                                map: self.map,
+                                bounds: {
+                                    north: item.getNorthEast().lat(),
+                                    south: item.getSouthWest().lat(),
+                                    east: item.getNorthEast().lng(),
+                                    west: item.getSouthWest().lng()
+                                }
+                            });
+
                         });
+                        directionsDisplay.setMap(self.map);
 
-                    });
+                        $locationService.getPlacesAlongRoute(list, self.searchFilter).then(function (results) {
+                            self.filteredPlaces = $placeFilterService.filterPlacesByBounds(results.data, list);
+                            self.setupMarkers();
+                            self.setLoadingVisible(false);
+                            directionsDisplay.setDirections(response);
+                            $scope.$apply();
 
-                })
-
-                promise.then(function (places) {
-                    populateResults(places);
-                    self.normalizedPlaces = $placeFilterService.sortByProperty($placeFilterService.eliminateDuplicates($placeFilterService.filterPlaces(results, self.location)), "distance");
-                    self.filterPlacesByRadius(null, self.sliderModel);
-                    directionsDisplay.setMap(self.map);
-                    self.setLoadingVisible(false);
-
-                });
-            });
-
-            function populateResults(places) {
-                if (places) {
-                    for (var place in places) {
-                        if (results[place]) {
-                            results[place] = results[place].concat(places[place]);
-                        } else {
-                            results[place] = places[place];
-                        }
+                        }, function (error) { console.log(error) });
                     }
-                }
-
-            }
+                });
+            })
 
         }
 
@@ -141,7 +125,6 @@ angular.module('instaPlaceApp')
 
         }
 
-     
         this.filterPlacesByRadius = function (event, value) {
 
             var tempFilter = [];
@@ -178,10 +161,6 @@ angular.module('instaPlaceApp')
             }
             item.selected = !item.selected;
 
-            $locationService.calculateAndDisplayRoute({ lat: self.currentLocation.coords.latitude, lng: self.currentLocation.coords.longitude }, { lat: item.location.latitude, lng: item.location.longitude })
-                .then(function (route) {
-                    directionsDisplay.setDirections(route);
-                })
         }
 
         this.openInfoWindow = function (marker) {
@@ -210,6 +189,66 @@ angular.module('instaPlaceApp')
             }
 
         }
+
+        this.setIconConfig = function (size) {
+            this.placeIconWidth = size + "px";
+            this.placeIconHeight = size + "px";
+            this.top = "14px"
+            this.background_size = "contain";
+            this.position = "relative";
+            this.box_shadow = "3px 3px 2px 2px rgba(0, 0, 0, 0.4)";
+            this.display = "inline-block";
+        }
+
+        function setPageDimensions() {
+            var height = $('.mainview').height() - $('.autocomplete').height();
+            $('.angular-google-map-container').height(height);
+            $('.ui-list-view').height(height - $('.mainListView').height());
+        }
+
+
+        this.mapsInitialisedPromise = uiGmapIsReady.promise()
+            .then(function (map_instances) {
+                this.map = map_instances[0].map;      // get map object through array object returned by uiGmapIsReady promise
+            }.bind(this));
+
+        if ($stateParams.source && $stateParams.destination) {
+            this.sourceLocation = $stateParams.source;
+            this.destinationLocation = $stateParams.destination;
+            this.filter = $stateParams.filter;
+
+            $locationService.getLatLngFromAddress(this.sourceLocation).then(function (position) {
+
+                position = { coords: { latitude: position.lat(), longitude: position.lng() } };
+                this.location = position;
+                setPageDimensions();
+                this.currentLocation = this.location;
+                this.mapsInitialisedPromise.then(function () {
+                    this.searchNearByPlaces(this.sourceLocation, this.destinationLocation, this.filter);
+                }.bind(this))
+
+            }.bind(this))
+
+        } else {
+            $locationService.getLocation().then(function (position) {
+                position = { coords: { latitude: position.coords.latitude, longitude: position.coords.longitude } };
+                self.location = position;
+                setPageDimensions();
+                return $locationService.getAddress(self.location.coords)
+            })
+                .then(function (address) {
+                    self.sourceLocation = address;
+                    self.currentLocation = angular.copy(self.location);
+                    $scope.$apply();
+                });
+        }
+
+        $scope.$on('update_location', function (event, result) {
+            self.mapZoom = 14;
+            self.location = { coords: { latitude: result.geometry.location.lat(), longitude: result.geometry.location.lng() } };
+            self.currentLocation = angular.copy(self.location);
+            self.filteredPlaces = [];
+        });
 
     }]);
 

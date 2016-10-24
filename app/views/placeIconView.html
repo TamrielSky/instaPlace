@@ -1,0 +1,12 @@
+<div class="filters" ng-repeat="placeIcon in placeIconCtrl.placeIcons">
+	<div class="{{placeIcon.name}}" style=" width: {{main.placeIconWidth}};
+    height: {{main.placeIconHeight}};
+    top: {{main.top}};
+    background-size: contain;
+    position: relative;
+    box-shadow: 3px 3px 2px 2px rgba(0, 0, 0, 0.4);
+
+ display: {{main.display}}; background-image: url('../images/{{placeIcon.name}}.png'); box-shadow: {{placeIcon.boxShadow}};"
+		ng-click="placeIconCtrl.addFilter(placeIcon.name, main)"></div>
+        <div> {{placeIcon.name}}</div>
+</div>

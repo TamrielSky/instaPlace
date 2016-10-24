@@ -72,80 +72,6 @@ angular.module('instaPlaceApp')
             });
         }
 
-        this.getNearByPlaces = function (currentAddress, lat, lng, zoom, currentMap, radius, filter) {
-
-            var results = {};
-            function randomString(length, chars) {
-                var result = '';
-                for (var i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
-                return result;
-            }
-
-            function generateParams(lat, lng, address, api, radius, filter, yelp, offset) {
-                
-                var callbackId = angular.callbacks.$$counter.toString(36);
-       
-                var params = {
-                    callback: 'angular.callbacks._' + callbackId,
-                    oauth_consumer_key: 'h_CfYvwNTS51n96wd1J8Yg', // consumer key
-                    oauth_token: 'YQHmflBE5VKvzjCgO5N3YkmsB4xIUNsa', //Token
-                    oauth_signature_method: 'HMAC-SHA1',
-                    oauth_timestamp: new Date().getTime(),
-                    oauth_nonce: randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'),
-                    term: yelp[filter],
-                    ll: lat + "," + lng,
-                    radius_filter: radius
-
-                };
-
-                var signature =
-                    oauthSignature.generate(
-                        'GET',
-                        api,
-                        params,
-                        'yRk21bPPiZShxKn6stv2qth8nm4',
-                        'Ptd6VdD63_AHgKNd_aezFO4iiuw',
-                        { encodeSignature: false }
-                    );
-                params['oauth_signature'] = signature;
-                if (offset) {
-                    params['offset'] = offset;
-                }
-                if (filter) {
-                    
-                }
-                return params;
-            }
-            var self = this;
-
-            var promises = [];
-            promises.push($http.jsonp(this.yelpApi, { params: generateParams(lat, lng, currentAddress, this.yelpApi, radius, filter, this.categoryMap.yelp) }));
-            promises.push($http({ method: 'GET', url: this.fourSquareApi + 'radius=' + radius + '&categoryId=' + this.categoryMap.foursquare[filter] + '&limit=50&ll=' + lat + ',' + lng + '&v=20160806&client_id=HTYPWDKP445LBUZJLZWDR3C4D1GCOB4WNPW20UUGSJH0C32R&client_secret=V5VSZEHG1O4VNIGZSFAM11ZLHB2WKOEWOPMADS0XF1QRQMML' }));
-
-            promises.push(new Promise(function (resolve, reject) {
-
-                var map = currentMap;
-                var request = {
-                    location: { lat: lat, lng: lng },
-                    radius: radius,
-                    type: [filter]
-                };
-                var service = new google.maps.places.PlacesService(map);
-                service.nearbySearch(request, function (results, status) {
-                    if (status == google.maps.places.PlacesServiceStatus.OK) {
-                        resolve(results);
-                    }
-                });
-            }));
-
-            return Promise.all(promises).then(function(result){
-                return new Promise(function (resolve, reject) {
-                    results[filter] = result;
-                    resolve(results);
-                });
-            });
-        }
-
         this.getLatLngFromAddress = function (address) {
             return new Promise(function (resolve, reject) {
                 var geocoder = new google.maps.Geocoder;
@@ -226,5 +152,20 @@ angular.module('instaPlaceApp')
                     }
                 });
             });
+        }
+
+        this.getPlacesAlongRoute = function (bounds, filters) {
+
+            var request = {
+                url: 'http://localhost:3000/search',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: [bounds, filters]
+            }
+
+            return $http(request);
+
         }
     });

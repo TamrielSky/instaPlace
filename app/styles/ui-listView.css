@@ -2,7 +2,7 @@
     overflow: auto !important;
     position: relative;
     -webkit-overflow-scrolling: touch;
-    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif ;
+font-family: Gill Sans / Gill Sans MT, sans-serif;
 }
 .ui-list-view-cell {
     position: absolute;
@@ -33,6 +33,8 @@
 
 .ui-list-view-cell .address {
     font-size: 13px;
+    font-family: Georgia, Serif;
+
 }
 .ui-list-view-bordered .place {
     font-weight: bold;
@@ -72,8 +74,11 @@
 
  .review {
     opacity: 0.8;
-    font-size: small; 
+        font-size: 12px;
+
     margin-top: 5px;
+    font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+
 }
 
 .comment {

@@ -26,6 +26,14 @@
     top: 14px;
 }
 
+.gradient-button {
+    background: #ff3019; /* Old browsers */
+    background: -moz-linear-gradient(top, #ff3019 39%, #ff3019 39%, #cf0404 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #ff3019 39%,#ff3019 39%,#cf0404 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #ff3019 39%,#ff3019 39%,#cf0404 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    width: 80px;
+}
+ 
 .toolbar-panel{
     width: 100%;
 }
@@ -36,22 +44,11 @@
     margin-left: 20px;
 }
 
-
-.filters div{
-    width: 40px;
-    height: 40px;
-    top: 14px;
-    background-size: 40px;
-    position: relative;
-    box-shadow: 3px 3px 2px 2px rgba(0, 0, 0, 0.4);
-
-}
-
 .filters div:hover {
     opacity :0.8;
 }
 
-ul input {
+.toolbar-panel  input {
     width: 300px;
     height: 100%;
     border: 1px solid;

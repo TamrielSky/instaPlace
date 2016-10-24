@@ -33,13 +33,11 @@
 
 <body ng-app="instaPlaceApp">
 
-
-
   <!-- MAIN CONTENT -->
   <div class="container mainview">
 
     <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
-    <div ui-view></div>
+    <div ui-view id="subview"></div>
 
   </div>
 
@@ -87,6 +85,10 @@
   <script src="scripts/controllers/autocomplete.js"></script>
   <script src="scripts/services/geolocationServices.js"></script>
   <script src="scripts/services/placeFilterService.js"></script>
+  <script src="scripts/services/routeBoxerService.js"></script>
+  <script src="scripts/controllers/placeIcons.js"></script>
+
+
   <!-- endbuild -->
 
 </body>
