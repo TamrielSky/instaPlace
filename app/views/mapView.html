@@ -1,18 +1,40 @@
+
+<div class="checkbox-container">
+<div class="checkbox" style="padding: 5px;">
+  <label>
+    <input type="checkbox" ng-model="homePage.checked" value="homePage.checked" ng-change="homePage.showRouteBoxes(homePage.checked)">
+      Show route boxes
+  </label>
+</div>
+</div>
+
 <ui-gmap-google-map id="mymap" center="homePage.location.coords" zoom="homePage.mapZoom" options="options">
-            <ui-gmap-circle center="homePage.currentLocation.coords" stroke="homePage.gmapCircle.stroke" fill="homePage.gmapCircle.fill" radius="homePage.sliderModel*1609"
-                visible="homePage.gmapCircle.visible" control="homePage.gmapCircle.control"></ui-gmap-circle>
 
-    <ui-gmap-marker coords="homePage.currentLocation.coords" options="mapConfig.currentLocationMarker.options" idkey="0">
-    </ui-gmap-marker>
+	<div ng-if="homePage.sourceLocation">
+		<ui-gmap-circle center="homePage.sourceLocationCoords" stroke="homePage.gmapCircle.stroke" fill="homePage.gmapCircle.fill"
+			radius="1" visible="homePage.gmapCircle.visible" control="homePage.gmapCircle.control"></ui-gmap-circle>
 
- <ui-gmap-window closeClick="closeClick()" show="homePage.infoWindow.show" coords="homePage.infoWindow.coords">
-            <div class="infoWindow">
-                <div id="title">{{homePage.infoWindow.name}}</div>
-                <div id="info">{{homePage.infoWindow.address}}</div>
-            </div>
-</ui-gmap-window>
-    <ui-gmap-marker ng-repeat="m in homePage.markers" coords="m.coords" idkey="m.id" options="mapConfig.markers[m.filter]" events="homePage.markerEvents">
-       
-    </ui-gmap-marker>
+		<ui-gmap-marker coords="homePage.sourceLocationCoords" options="mapConfig.currentLocationMarker.options" idkey="0">
+		</ui-gmap-marker>
+	</div>
 
-</ui-gmap-google-map> 
+		<div ng-if="homePage.destinationLocation">
+		<ui-gmap-circle center="homePage.destinationLocationCoords" stroke="homePage.gmapCircle.stroke" fill="homePage.gmapCircle.fill"
+			radius="1" visible="homePage.gmapCircle.visible" control="homePage.gmapCircle.control"></ui-gmap-circle>
+
+		<ui-gmap-marker coords="homePage.destinationLocationCoords" options="mapConfig.currentLocationMarker.options" idkey="0">
+		</ui-gmap-marker>
+	</div>
+
+	<ui-gmap-window closeClick="closeClick()" show="homePage.infoWindow.show" coords="homePage.infoWindow.coords">
+		<div class="infoWindow">
+			<div id="title">{{homePage.infoWindow.name}}</div>
+			<div id="info">{{homePage.infoWindow.address}}</div>
+		</div>
+	</ui-gmap-window>
+	<ui-gmap-marker ng-repeat="m in homePage.markers" coords="m.coords" idkey="m.id" options="mapConfig.markers[m.filter]" events="homePage.markerEvents">
+
+	</ui-gmap-marker>
+
+
+</ui-gmap-google-map>

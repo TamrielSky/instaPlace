@@ -6,8 +6,8 @@
                  aria-expanded="true">Sort <span class="caret"></span>
   </button>
            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                 <li><a ng-click="homePage.sortPlaces('rating', true)" href="#">Popularity</a></li>
-                <li><a ng-click="homePage.sortPlaces('distance', false)" href="#">Distance</a></li>
+                 <li><a ng-click="homePage.sortPlaces('rating', true)">Popularity</a></li>
+                <li><a ng-click="homePage.sortPlaces('distance', false)">Distance</a></li>
             </ul>
        </div>
         <input class="form-control" ng-model="search.name" placeholder="Search place.." />
@@ -17,7 +17,7 @@
 
         <div class="ui-list-view-bordered" ui-list-view="place in homePage.filteredPlaces | filter:search">
             <div id="{{place.place_id}}" ng-click="homePage.clickListItem(place, place.selected); place.selected" ng-class="{selected: place.selected}">
-                <div class="place">{{place.name}}<span class="distance">{{place.distance}}mi</span></div>
+                <div class="place">{{place.name}}<span class="filter-icon"><img src="../images/{{place.filter}}-mini.png" width="30px" /></span></div>
                 <div ng-if="place.rating" class="stars">
                     <img src="../images/{{Math.floor(place.rating)}}{{Math.round(place.rating)}}stars.png"></img>
                 </div>

@@ -7,3 +7,26 @@
       padding: 0;
 	margin: 0;
 }
+
+.checkbox-container {
+      font-family: Century Gothic, sans-serif;
+      color: white;
+      font-weight: bold;
+      background: #ffaf4b; /* Old browsers */
+      background: -moz-linear-gradient(top, #ffaf4b 0%, #ff920a 77%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(top, #ffaf4b 0%,#ff920a 77%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to bottom, #ffaf4b 0%,#ff920a 77%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffaf4b', endColorstr='#ff920a',GradientType=0 ); /* IE6-9 */
+      position: absolute;
+      z-index: 999999; 
+      right: 5px; 
+      top: 10px;
+      -webkit-box-shadow: 7px 7px 6px -6px #777;
+      -moz-box-shadow: 7px 7px 6px -6px #777;
+      box-shadow: 7px 7px 6px -6px #777;
+}
+
+.checkbox {
+      margin-top: 2px;
+      margin-bottom: 2px;
+}

@@ -28,7 +28,7 @@ angular
   ])
   .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/welcome');
 
     $stateProvider
 

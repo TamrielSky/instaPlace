@@ -29,8 +29,13 @@ angular.module('instaPlaceApp')
 
     this.searchPlacesAlongRoute = function (source, destination) {
 
-      console.log("source" + source + "   destination:" + destination);
-      $state.go('home', { 'source': source, 'destination': destination, 'filter': this.searchFilter});
+      if (!this.searchFilter || this.searchFilter.length < 1) {
+        alert("Please select/click place filters before a search");
+      } else {
+
+        console.log("source" + source + "   destination:" + destination);
+        $state.go('home', { 'source': source, 'destination': destination, 'filter': this.searchFilter });
+      }
 
       // $location.path("#/home").search({source: source, destination: destination});
 

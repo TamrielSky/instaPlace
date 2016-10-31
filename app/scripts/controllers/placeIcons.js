@@ -15,13 +15,13 @@ this.place = "";
      this.filterArray = [];
 
     this.placeIcons = [
-      { name: "restaurant", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
-      { name: "atm", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
+      { title: "Restaurant", name: "restaurant", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
+      { title: "ATM", name: "atm", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
     //  { name: "airport", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
-      { name: "bar", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
-      { name: "hospital", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
-      { name: "grocery", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
-      { name: "gas_station", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" }
+      { title: "Bar", name: "bar", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
+      { title: "Hospital", name: "hospital", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
+      { title: "Grocery", name: "grocery", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" },
+      { title: "Gas", name: "gas_station", boxShadow: "3px 3px 2px 2px rgba(0, 0, 0, 0.4)" }
 
     ];
 

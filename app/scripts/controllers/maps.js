@@ -39,28 +39,28 @@ angular.module('instaPlaceApp')
             'gas_station': {
                 options: {
                     icon: {
-                        url: '../images/gas_station-marker.png', scaledSize: new google.maps.Size(30, 30)
+                        url: '../images/gas_station-marker.png', scaledSize: new google.maps.Size(30, 35)
                     },
                 }
             },
             'restaurant': {
                 options: {
                     icon: {
-                        url: '../images/restaurant-marker.png', scaledSize: new google.maps.Size(30, 30)
+                        url: '../images/restaurant-marker.png', scaledSize: new google.maps.Size(30, 35)
                     },
                 }
             },
             'atm': {
                 options: {
                     icon: {
-                        url: '../images/atm-marker.png', scaledSize: new google.maps.Size(30, 30)
+                        url: '../images/atm-marker.png', scaledSize: new google.maps.Size(30, 35)
                     },
                 }
             },
             'bar': {
                 options: {
                     icon: {
-                        url: '../images/bar-marker.png', scaledSize: new google.maps.Size(30, 30)
+                        url: '../images/bar-marker.png', scaledSize: new google.maps.Size(30, 35)
                     },
                 }
             },
@@ -68,14 +68,14 @@ angular.module('instaPlaceApp')
             'grocery': {
                 options: {
                     icon: {
-                        url: '../images/grocery-marker.png', scaledSize: new google.maps.Size(30, 30)
+                        url: '../images/grocery-marker.png', scaledSize: new google.maps.Size(30, 35)
                     },
                 }
             },
             'airport': {
                 options: {
                     icon: {
-                        url: '../images/atm-marker.png', scaledSize: new google.maps.Size(30, 30)
+                        url: '../images/atm-marker.png', scaledSize: new google.maps.Size(30, 35)
                     },
                 }
             },
@@ -83,7 +83,7 @@ angular.module('instaPlaceApp')
             'hospital': {
                 options: {
                     icon: {
-                        url: '../images/hospital-marker.png', scaledSize: new google.maps.Size(30, 30)
+                        url: '../images/hospital-marker.png', scaledSize: new google.maps.Size(30, 35)
                     },
                 }
             },
