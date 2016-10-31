@@ -157,7 +157,7 @@ angular.module('instaPlaceApp')
         this.getPlacesAlongRoute = function (bounds, filters) {
 
             var request = {
-                url: 'http://ec2-54-153-12-214.us-west-1.compute.amazonaws.com:3000/search',
+                url: 'https://ec2-54-153-12-214.us-west-1.compute.amazonaws.com:3000/search',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
